@@ -57,7 +57,7 @@ class MediaController extends Controller
         
         try {
             $request->validate([
-                'files.*' => 'required|file|extensions:jpg,jpeg,png,webp,avif,svg,mp4,mp3|max:102400', // Dùng extensions thay cho mimes
+                'files.*' => 'required|file|extensions:jpg,jpeg,png,webp,avif,svg,ico,gif,mp4,mp3|max:102400', // Đã bổ sung ico, gif
                 'folder'  => 'nullable|string|max:100',
             ]);
         } catch (\Exception $e) {
@@ -181,7 +181,7 @@ class MediaController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Đã xóa tệp vĩnh viễn khỏi Public Storage.'
+            'message' => 'Đã xóa tệp vĩnh viễn.'
         ]);
     }
 
@@ -204,7 +204,7 @@ class MediaController extends Controller
         Log::info("Bulk Delete Finished. Total items removed: " . $deletedCount);
         return response()->json([
             'success' => true,
-            'message' => "Đã xóa {$deletedCount} tệp khỏi Public Storage."
+            'message' => "Đã xóa {$deletedCount} tệp."
         ]);
     }
 
@@ -263,7 +263,7 @@ class MediaController extends Controller
         $mime = $file->getMimeType();
         $extension = strtolower($file->getClientOriginalExtension());
 
-        if (str_contains($mime, 'image') || in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'avif', 'svg'])) return 'image';
+        if (str_contains($mime, 'image') || in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'avif', 'svg', 'ico', 'gif'])) return 'image';
         if (str_contains($mime, 'video') || in_array($extension, ['mp4', 'mov', 'avi'])) return 'video';
         if (str_contains($mime, 'audio') || in_array($extension, ['mp3', 'wav'])) return 'audio';
         return 'other';

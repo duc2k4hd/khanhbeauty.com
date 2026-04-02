@@ -205,7 +205,7 @@
   <div class="khanhbeauty-gallery__masonry stagger-children" id="galleryGrid">
     @foreach($latestPortfolios as $portfolio)
     <div class="khanhbeauty-gallery__item reveal" data-category="{{ $portfolio->category }}">
-      <img src="{{ $portfolio->after_image }}" alt="{{ $portfolio->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+      <img src="{{ $portfolio->afterImage?->file_url ?? '/images/no-image.webp' }}" alt="{{ $portfolio->title }}" style="width: 100%; height: 100%; object-fit: cover;">
       <div class="khanhbeauty-gallery__item-overlay">
         <div class="khanhbeauty-gallery__item-info">
           <h4>{{ $portfolio->title }}</h4>

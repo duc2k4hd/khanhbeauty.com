@@ -149,18 +149,19 @@
 /* ─── SECTION 2: ABOUT ─── */
 .khanhbeauty-about { padding: var(--section-padding) 5%; position: relative; background: var(--white); overflow: hidden; }
 .khanhbeauty-about__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1200px; margin: 0 auto; }
+.khanhbeauty-about__image-wrap { position: relative; width: 380px; height: 380px; margin: 0 auto; }
 .khanhbeauty-about__image-diamond {
-  width: 380px; height: 380px; margin: 0 auto; position: relative; overflow: hidden;
+  width: 100%; height: 100%; position: relative; overflow: hidden; z-index: 1;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .khanhbeauty-about__image-diamond img { width: 100%; height: 100%; object-fit: cover; }
 .khanhbeauty-about__image-frame {
-  position: absolute; top: 50%; left: 50%; width: 420px; height: 420px;
-  transform: translate(-50%, -50%) rotate(45deg); border: 1px solid var(--pink-200); pointer-events: none;
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  transform: scale(1.1) rotate(45deg); border: 1px solid var(--pink-200); pointer-events: none; z-index: 0;
 }
 .khanhbeauty-about__exp-badge {
-  position: absolute; bottom: 20px; right: 10%; background: white; padding: 16px 24px;
+  position: absolute; bottom: 20px; right: -20px; background: white; padding: 16px 24px;
   border-radius: 16px; box-shadow: 0 10px 40px rgba(183, 110, 121, 0.12); text-align: center; z-index: 2;
 }
 .khanhbeauty-about__exp-badge strong { display: block; font-family: var(--font-display); font-size: 32px; color: var(--pink-500); line-height: 1; }
@@ -294,6 +295,9 @@
 @media (max-width: 768px) {
   .khanhbeauty-about__grid { grid-template-columns: 1fr; gap: 40px; }
   .khanhbeauty-services__grid { grid-template-columns: 1fr; gap: 20px; }
+  .khanhbeauty-about__image-wrap { width: 280px; height: 280px; }
+  .khanhbeauty-about__exp-badge { right: 0; padding: 12px 18px; bottom: 0; }
+  .khanhbeauty-about__exp-badge strong { font-size: 24px; }
   .khanhbeauty-service-card { padding: 30px 24px; border-radius: 20px; }
   .khanhbeauty-service-card__icon { width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px; }
   .khanhbeauty-service-card h3 { font-size: 18px; }

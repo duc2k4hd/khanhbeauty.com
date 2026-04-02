@@ -37,9 +37,9 @@ class ServiceController extends Controller
      */
     public function show($slug)
     {
-        // 1. Tối ưu Truy vấn & Cache (6 tiếng)
-        $cacheKey = 'service_page_' . $slug;
-        $service = Cache::remember($cacheKey, now()->addHours(6), function () use ($slug) {
+        // 1. Tối ưu Truy vấn & Cache (Lưu dạng Mảng thô để triệt tiêu lỗi Incomplete Object 500)
+        $v7Key = 'service_v7_safe_' . $slug; 
+        $serviceData = Cache::remember($v7Key, now()->addHours(6), function () use ($slug) {
             return Service::where('slug', $slug)
                 ->with([
                     'category', 
@@ -49,39 +49,64 @@ class ServiceController extends Controller
                     'reviews' => fn($q) => $q->approved()->latest()
                 ])
                 ->where('is_active', true)
-                ->firstOrFail();
+                ->firstOrFail()
+                ->toArray(); 
         });
 
-        // 2. Chạy ngầm Tăng Lượt Xem & Debounce theo Session
-        $sessionKey = 'viewed_service_' . $service->id;
-        if (!session()->has($sessionKey)) {
-            // Sử dụng defer/dispatch để tác vụ SQL chạy sau khi HTML đã trả về cho người dùng
-            if (function_exists('defer')) {
-                defer(fn() => Service::where('id', $service->id)->increment('view_count'));
-            } else {
-                dispatch(fn() => Service::where('id', $service->id)->increment('view_count'))->afterResponse();
-            }
-            session()->put($sessionKey, true);
+        // Tái tạo đối tượng lai: Cấp 1 là Object, các trường JSON giữ nguyên Array cho View
+        $service = (object) $serviceData;
+        if (isset($service->category)) $service->category = (object) $service->category;
+        if (isset($service->featured_image)) $service->featuredImage = (object) $service->featured_image;
+        
+        // Nạp Accessor gallery_media thủ công vì stdClass không tự hiểu hàm trong Model
+        $galleryIds = $serviceData['gallery_ids'] ?? [];
+        if (!empty($galleryIds)) {
+            $service->gallery_media = \App\Models\Media::whereIn('id', $galleryIds)
+                ->get()
+                ->sortBy(fn($m) => array_search($m->id, $galleryIds))
+                ->values();
+        } else {
+            $service->gallery_media = collect();
         }
 
-        // 3. Dịch vụ liên quan (Cache đệm)
-        $relatedCacheKey = 'related_services_' . $service->category_id;
-        $relatedServices = Cache::remember($relatedCacheKey, now()->addHours(12), function () use ($service) {
+        // Đảm bảo các quan hệ danh sách là Collection để dùng được ->count()
+        $service->variants = collect($serviceData['variants'] ?? [])->map(fn($v) => (object) $v);
+        $service->faqs = collect($serviceData['faqs'] ?? [])->map(fn($f) => (object) $f);
+        $service->reviews = collect($serviceData['reviews'] ?? [])->map(fn($r) => (object) $r);
+        
+        // 2. Tăng Lượt Xem - Debounce bằng Cache (An toàn hơn Session)
+        $viewKey = "view_safe_{$service->id}_" . request()->ip();
+        if (Cache::add($viewKey, true, now()->addHour())) {
+            \DB::table('services')->where('id', $service->id)->increment('view_count');
+        }
+
+        // 3. Dịch vụ liên quan (Cache mảng)
+        $relatedKey = 'related_v7_' . $service->category_id;
+        $relatedData = Cache::remember($relatedKey, now()->addHours(12), function () use ($service) {
             return Service::where('category_id', $service->category_id)
                 ->where('id', '!=', $service->id)
                 ->with(['category', 'featuredImage'])
                 ->active()
                 ->take(3)
-                ->get();
+                ->get()
+                ->toArray();
         });
 
-        // 4. Cấu hình SEO Meta nâng cao
+        // Chuẩn hóa danh sách liên quan cho View
+        $relatedServices = collect($relatedData)->map(function($item) {
+            $obj = (object) $item;
+            if (isset($obj->category)) $obj->category = (object) $obj->category;
+            if (isset($obj->featured_image)) $obj->featuredImage = (object) $obj->featured_image;
+            return $obj;
+        });
+
+        // 4. Cấu hình SEO Meta
         SEOTools::setTitle(($service->meta_title ?: $service->name) . ' - Khánh Beauty');
         SEOTools::setDescription($service->meta_description ?: $service->short_description);
         SEOTools::metatags()->addKeyword($service->meta_keywords ?: $service->name);
-        SEOTools::opengraph()->addProperty('type', 'article'); // Article/Product thay vì website
+        SEOTools::opengraph()->addProperty('type', 'article'); 
         
-        if ($service->featuredImage) {
+        if (isset($service->featuredImage->file_url)) {
             SEOTools::opengraph()->addImage(asset($service->featuredImage->file_url));
             SEOTools::twitter()->setImage(asset($service->featuredImage->file_url));
         }
@@ -106,13 +131,13 @@ class ServiceController extends Controller
                 '@type' => 'Offer',
                 'url' => route('services.show', $service->slug),
                 'priceCurrency' => 'VND',
-                'price' => $service->sale_price ?: $service->price,
+                'price' => ($service->sale_price ?? null) ?: $service->price,
                 'availability' => 'https://schema.org/InStock',
                 'itemCondition' => 'https://schema.org/NewCondition',
             ]
         ];
 
-        if ($service->avg_rating > 0 && $service->reviews->count() > 0) {
+        if (($service->avg_rating ?? 0) > 0 && $service->reviews->count() > 0) {
             $productSchema['aggregateRating'] = [
                 '@type' => 'AggregateRating',
                 'ratingValue' => $service->avg_rating,
@@ -123,7 +148,7 @@ class ServiceController extends Controller
         SEOTools::jsonLdMulti()->addValue('Product', $productSchema);
 
         // 5.2 FAQPage Schema (Hỏi đáp nhanh trên Google)
-        if ($service->faqs && $service->faqs->count() > 0) {
+        if ($service->faqs->count() > 0) {
             $faqSchema = [
                 '@context' => 'https://schema.org/',
                 '@type' => 'FAQPage',
