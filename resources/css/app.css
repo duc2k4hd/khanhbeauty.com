@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    /* Fonts */
+    --font-heading: 'Playfair Display', serif;
+    --font-elegant: 'Cormorant Garamond', serif;
+    --font-sans: 'Quicksand', sans-serif;
+
+    /* Colors - Khanh Beauty Palette */
+    --color-pink-100: #FFF5F7;
+    --color-pink-200: #FED7E2;
+    --color-pink-300: #FBB6CE;
+    --color-pink-400: #F687B3;
+    --color-pink-500: #ED64A6;
+    --color-pink-600: #D53F8C;
+    --color-rose-gold: #B76E79;
+    --color-rose-gold-light: #D4A0A7;
+    --color-cream: #FFFBF7;
+    --color-cream-warm: #FFF8F0;
+    --color-gold: #C9A96E;
+    --color-gold-light: #E8D5B0;
+    --color-text-dark: #2D2D2D;
+    --color-text-medium: #5A5A5A;
+    --color-text-light: #8A8A8A;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+    }
+    body {
+        @apply font-sans bg-cream text-text-dark antialiased;
+        overflow-x: hidden;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════ */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes floatSoft {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(10px, -15px) rotate(2deg); }
+    66% { transform: translate(-8px, 10px) rotate(-1deg); }
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollLine {
+    0% { top: -100%; }
+    50% { top: 100%; }
+    100% { top: 100%; }
+}

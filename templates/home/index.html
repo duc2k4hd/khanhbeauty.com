@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khánh Beauty — Dịch Vụ Make Up & Trang Điểm Tại Nhà Chuyên Nghiệp</title>
+<meta name="description" content="Dịch vụ make up chuyên nghiệp tại Khanh Beauty – trang điểm tại nhà, make up dự tiệc, cô dâu, sự kiện. Đội ngũ chuyên gia giúp bạn tỏa sáng tự nhiên, sang trọng.">
+<meta name="keywords" content="Khánh Beauty, Dịch Vụ Make Up, Trang Điểm Tại Nhà, Chuyên Nghiệp, make up cô dâu, make up dự tiệc, make up sự kiện, make up chuyên nghiệp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   CSS VARIABLES & RESET
+   ═══════════════════════════════════════════ */
+:root {
+  --pink-100: #FFF5F7;
+  --pink-200: #FED7E2;
+  --pink-300: #FBB6CE;
+  --pink-400: #F687B3;
+  --pink-500: #ED64A6;
+  --pink-600: #D53F8C;
+  --rose-gold: #B76E79;
+  --rose-gold-light: #D4A0A7;
+  --cream: #FFFBF7;
+  --cream-warm: #FFF8F0;
+  --white: #FFFFFF;
+  --text-dark: #2D2D2D;
+  --text-medium: #5A5A5A;
+  --text-light: #8A8A8A;
+  --gold: #C9A96E;
+  --gold-light: #E8D5B0;
+
+  --font-display: 'Playfair Display', serif;
+  --font-elegant: 'Cormorant Garamond', serif;
+  --font-body: 'Quicksand', sans-serif;
+
+  --section-padding: clamp(60px, 10vw, 120px);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  background: var(--cream);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ═══════════════════════════════════════════
+   SCROLL ANIMATIONS BASE
+   ═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-80px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right {
+  opacity: 0;
+  transform: translateX(80px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+/* Stagger children */
+.stagger-children .reveal:nth-child(1) { transition-delay: 0s; }
+.stagger-children .reveal:nth-child(2) { transition-delay: 0.15s; }
+.stagger-children .reveal:nth-child(3) { transition-delay: 0.3s; }
+.stagger-children .reveal:nth-child(4) { transition-delay: 0.45s; }
+.stagger-children .reveal:nth-child(5) { transition-delay: 0.6s; }
+.stagger-children .reveal:nth-child(6) { transition-delay: 0.75s; }
+
+/* ═══════════════════════════════════════════
+   FLOATING BOOKING BUTTON
+   ═══════════════════════════════════════════ */
+.floating-cta {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+  background: linear-gradient(135deg, var(--pink-500), var(--rose-gold));
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(237, 100, 166, 0.4);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.floating-cta.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.floating-cta:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(237, 100, 166, 0.5);
+}
+.floating-cta svg { width: 18px; height: 18px; }
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════ */
+.khanhbeauty-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.5s ease;
+}
+.khanhbeauty-nav.scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  padding: 14px 50px;
+  box-shadow: 0 2px 30px rgba(183, 110, 121, 0.08);
+}
+.khanhbeauty-nav__logo {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--rose-gold);
+  letter-spacing: 1px;
+}
+.khanhbeauty-nav__logo span {
+  font-family: var(--font-elegant);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+  display: block;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pink-400);
+  margin-top: -2px;
+}
+.khanhbeauty-nav__links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.khanhbeauty-nav__links a {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-medium);
+  position: relative;
+  transition: color 0.3s;
+}
+.khanhbeauty-nav__links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--pink-400);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.khanhbeauty-nav__links a:hover { color: var(--pink-500); }
+.khanhbeauty-nav__links a:hover::after { width: 100%; }
+.khanhbeauty-nav__book {
+  background: transparent;
+  border: 1.5px solid var(--rose-gold);
+  color: var(--rose-gold);
+  padding: 10px 28px;
+  border-radius: 30px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.khanhbeauty-nav__book:hover {
+  background: var(--rose-gold);
+  color: white;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 1: HERO — CINEMATIC
+   ═══════════════════════════════════════════ */
+.khanhbeauty-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--pink-100) 40%, var(--cream-warm) 100%);
+}
+/* Decorative elements */
+.khanhbeauty-hero__decor-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--pink-200);
+  opacity: 0.5;
+  animation: floatSoft 8s ease-in-out infinite;
+}
+.khanhbeauty-hero__decor-circle:nth-child(1) {
+  width: 400px; height: 400px;
+  top: -100px; right: -100px;
+  border-width: 2px;
+  border-color: var(--pink-200);
+}
+.khanhbeauty-hero__decor-circle:nth-child(2) {
+  width: 250px; height: 250px;
+  bottom: 10%; left: 5%;
+  animation-delay: -3s;
+  border-color: var(--rose-gold-light);
+}
+.khanhbeauty-hero__decor-circle:nth-child(3) {
+  width: 150px; height: 150px;
+  top: 30%; left: 15%;
+  animation-delay: -5s;
+}
+@keyframes floatSoft {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -15px) rotate(2deg); }
+  66% { transform: translate(-8px, 10px) rotate(-1deg); }
+}
+
+/* Brush stroke SVG decoration */
+.khanhbeauty-hero__brush {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 200px;
+  opacity: 0.06;
+}
+
+.khanhbeauty-hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+}
+.khanhbeauty-hero__badge {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  border: 1px solid var(--rose-gold-light);
+  padding: 8px 24px;
+  border-radius: 30px;
+  margin-bottom: 30px;
+  opacity: 0;
+  animation: fadeSlideUp 1s 0.3s forwards;
+}
+.khanhbeauty-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 8vw, 110px);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeSlideUp 1s 0.5s forwards;
+}
+.khanhbeauty-hero__title em {
+  font-style: italic;
+  color: var(--pink-500);
+  position: relative;
+}
+.khanhbeauty-hero__title em::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: var(--pink-200);
+  opacity: 0.4;
+  z-index: -1;
+  border-radius: 4px;
+}
+.khanhbeauty-hero__subtitle {
+  font-family: var(--font-elegant);
+  font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-light);
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeSlideUp 1s 0.7s forwards;
+}
+.khanhbeauty-hero__cta-group {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeSlideUp 1s 0.9s forwards;
+}
+.khanhbeauty-hero__cta {
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border: none;
+}
+.khanhbeauty-hero__cta--primary {
+  background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+  color: white;
+  box-shadow: 0 8px 30px rgba(237, 100, 166, 0.3);
+}
+.khanhbeauty-hero__cta--primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(237, 100, 166, 0.45);
+}
+.khanhbeauty-hero__cta--secondary {
+  background: transparent;
+  border: 1.5px solid var(--rose-gold-light);
+  color: var(--rose-gold);
+}
+.khanhbeauty-hero__cta--secondary:hover {
+  background: var(--rose-gold);
+  color: white;
+  border-color: var(--rose-gold);
+}
+
+/* Scroll indicator */
+.khanhbeauty-hero__scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeSlideUp 1s 1.2s forwards;
+}
+.khanhbeauty-hero__scroll span {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+.khanhbeauty-hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: var(--pink-300);
+  position: relative;
+  overflow: hidden;
+}
+.khanhbeauty-hero__scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--pink-500);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0% { top: -100%; }
+  50% { top: 100%; }
+  100% { top: 100%; }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 2: ABOUT — "TÔI LÀ AI"
+   ═══════════════════════════════════════════ */
+.khanhbeauty-about {
+  padding: var(--section-padding) 5%;
+  position: relative;
+  background: var(--white);
+  overflow: hidden;
+}
+.khanhbeauty-about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+/* Diamond-shaped image */
+.khanhbeauty-about__image-wrap {
+  position: relative;
+}
+.khanhbeauty-about__image-diamond {
+  width: 380px;
+  height: 380px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.khanhbeauty-about__image-diamond:hover {
+  transform: rotate(5deg) scale(1.03);
+}
+.khanhbeauty-about__image-diamond img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Decorative frame around diamond */
+.khanhbeauty-about__image-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 420px;
+  height: 420px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border: 1px solid var(--pink-200);
+  pointer-events: none;
+}
+/* Small floating badge */
+.khanhbeauty-about__exp-badge {
+  position: absolute;
+  bottom: 20px;
+  right: 10%;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(183, 110, 121, 0.12);
+  text-align: center;
+  z-index: 2;
+}
+.khanhbeauty-about__exp-badge strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--pink-500);
+  line-height: 1;
+}
+.khanhbeauty-about__exp-badge span {
+  font-size: 12px;
+  color: var(--text-light);
+  letter-spacing: 1px;
+}
+
+.khanhbeauty-about__text .section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+.khanhbeauty-about__text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 24px;
+  color: var(--text-dark);
+}
+.khanhbeauty-about__text h2 em {
+  color: var(--pink-500);
+  font-style: italic;
+}
+.khanhbeauty-about__text p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-medium);
+  margin-bottom: 20px;
+}
+.khanhbeauty-about__stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--pink-200);
+}
+.khanhbeauty-about__stat-item {
+  text-align: center;
+}
+.khanhbeauty-about__stat-num {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--pink-500);
+  line-height: 1;
+}
+.khanhbeauty-about__stat-label {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 3: SERVICES — KỸ NĂNG
+   ═══════════════════════════════════════════ */
+.khanhbeauty-services {
+  padding: var(--section-padding) 5%;
+  background: linear-gradient(180deg, var(--pink-100) 0%, var(--cream) 100%);
+  position: relative;
+}
+.khanhbeauty-services__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+.khanhbeauty-services__header .section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+.khanhbeauty-services__header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-dark);
+}
+
+.khanhbeauty-services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.khanhbeauty-service-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid rgba(251, 182, 206, 0.2);
+}
+.khanhbeauty-service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--pink-300), var(--pink-500), var(--rose-gold));
+  transform: scaleX(0);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: left;
+}
+.khanhbeauty-service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(183, 110, 121, 0.12);
+}
+.khanhbeauty-service-card:hover::before { transform: scaleX(1); }
+
+.khanhbeauty-service-card__icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink-100), var(--pink-200));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.khanhbeauty-service-card:hover .khanhbeauty-service-card__icon {
+  transform: scale(1.1) rotate(5deg);
+}
+.khanhbeauty-service-card h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-dark);
+}
+.khanhbeauty-service-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-medium);
+  margin-bottom: 16px;
+}
+.khanhbeauty-service-card__price {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--pink-500);
+}
+.khanhbeauty-service-card__price small {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-light);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 4: SKILLS SHOWCASE — SCROLL ANIMATION
+   ═══════════════════════════════════════════ */
+.khanhbeauty-showcase {
+  padding: var(--section-padding) 0;
+  background: var(--white);
+  overflow: hidden;
+}
+.khanhbeauty-showcase__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 70px;
+  padding: 0 20px;
+}
+.khanhbeauty-showcase__header .section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+.khanhbeauty-showcase__header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.khanhbeauty-showcase__item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: center;
+  min-height: 500px;
+}
+.khanhbeauty-showcase__item:nth-child(even) {
+  direction: rtl;
+}
+.khanhbeauty-showcase__item:nth-child(even) > * {
+  direction: ltr;
+}
+
+.khanhbeauty-showcase__image {
+  position: relative;
+  height: 100%;
+  min-height: 500px;
+  overflow: hidden;
+}
+.khanhbeauty-showcase__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.khanhbeauty-showcase__item:hover .khanhbeauty-showcase__image img {
+  transform: scale(1.06);
+}
+/* Artistic clip-path overlays */
+.khanhbeauty-showcase__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(237, 100, 166, 0.1), transparent 60%);
+  pointer-events: none;
+}
+.khanhbeauty-showcase__image-tag {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pink-500);
+  letter-spacing: 1px;
+  z-index: 2;
+}
+.khanhbeauty-showcase__item:nth-child(even) .khanhbeauty-showcase__image-tag {
+  left: auto;
+  right: 30px;
+}
+
+.khanhbeauty-showcase__content {
+  padding: 60px 80px;
+}
+.khanhbeauty-showcase__step-num {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--pink-200);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.khanhbeauty-showcase__content h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-dark);
+}
+.khanhbeauty-showcase__content p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-medium);
+  margin-bottom: 24px;
+}
+.khanhbeauty-showcase__skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.khanhbeauty-showcase__skill-tag {
+  background: var(--pink-100);
+  color: var(--pink-500);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 5: BEFORE / AFTER
+   ═══════════════════════════════════════════ */
+.khanhbeauty-ba {
+  padding: var(--section-padding) 5%;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--pink-100) 50%, var(--cream) 100%);
+}
+.khanhbeauty-ba__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+.khanhbeauty-ba__header .section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+.khanhbeauty-ba__header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.khanhbeauty-ba__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.khanhbeauty-ba__slider {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  cursor: ew-resize;
+  box-shadow: 0 10px 40px rgba(183, 110, 121, 0.12);
+}
+.khanhbeauty-ba__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.khanhbeauty-ba__img--after {
+  clip-path: inset(0 50% 0 0);
+}
+.khanhbeauty-ba__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: white;
+  transform: translateX(-50%);
+  z-index: 3;
+  pointer-events: none;
+}
+.khanhbeauty-ba__divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+.khanhbeauty-ba__divider::after {
+  content: '⟨  ⟩';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: var(--pink-500);
+  font-weight: 700;
+  z-index: 4;
+  white-space: nowrap;
+}
+.khanhbeauty-ba__label {
+  position: absolute;
+  bottom: 16px;
+  z-index: 5;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.khanhbeauty-ba__label--before {
+  left: 12px;
+  color: var(--text-light);
+}
+.khanhbeauty-ba__label--after {
+  right: 12px;
+  color: var(--pink-500);
+}
+.khanhbeauty-ba__slider-caption {
+  text-align: center;
+  margin-top: 16px;
+  font-family: var(--font-elegant);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-medium);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 6: PORTFOLIO GALLERY
+   ═══════════════════════════════════════════ */
+.khanhbeauty-gallery {
+  padding: var(--section-padding) 5%;
+  background: var(--white);
+}
+.khanhbeauty-gallery__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 50px;
+}
+.khanhbeauty-gallery__header .section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+.khanhbeauty-gallery__header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.khanhbeauty-gallery__filters {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.khanhbeauty-gallery__filter {
+  padding: 8px 24px;
+  border-radius: 30px;
+  border: 1px solid var(--pink-200);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-medium);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.khanhbeauty-gallery__filter.active,
+.khanhbeauty-gallery__filter:hover {
+  background: var(--pink-500);
+  color: white;
+  border-color: var(--pink-500);
+}
+.khanhbeauty-gallery__masonry {
+  columns: 4;
+  column-gap: 20px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.khanhbeauty-gallery__item {
+  break-inside: avoid;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.khanhbeauty-gallery__item:hover {
+  transform: scale(1.02);
+}
+.khanhbeauty-gallery__item img {
+  width: 100%;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.khanhbeauty-gallery__item:hover img {
+  transform: scale(1.08);
+}
+.khanhbeauty-gallery__item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(45, 45, 45, 0.7));
+  opacity: 0;
+  transition: opacity 0.4s;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+.khanhbeauty-gallery__item:hover .khanhbeauty-gallery__item-overlay {
+  opacity: 1;
+}
+.khanhbeauty-gallery__item-info h4 {
+  color: white;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+}
+.khanhbeauty-gallery__item-info span {
+  color: var(--pink-200);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 7: TESTIMONIALS
+   ═══════════════════════════════════════════ */
+.khanhbeauty-testimonials {
+  padding: var(--section-padding) 5%;
+  background: linear-gradient(180deg, var(--pink-100) 0%, var(--cream) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.khanhbeauty-testimonials__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+.khanhbeauty-testimonials__header .section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+.khanhbeauty-testimonials__header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.khanhbeauty-testimonials__track {
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-x: auto;
+  padding: 20px 0 40px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.khanhbeauty-testimonials__track::-webkit-scrollbar { display: none; }
+
+.khanhbeauty-testimonial-card {
+  min-width: 360px;
+  max-width: 380px;
+  background: var(--white);
+  border-radius: 24px;
+  padding: 36px;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  box-shadow: 0 4px 30px rgba(183, 110, 121, 0.06);
+  border: 1px solid rgba(251, 182, 206, 0.2);
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+.khanhbeauty-testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(183, 110, 121, 0.12);
+}
+.khanhbeauty-testimonial-card__stars {
+  color: var(--gold);
+  font-size: 16px;
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+}
+.khanhbeauty-testimonial-card__text {
+  font-family: var(--font-elegant);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--text-medium);
+  margin-bottom: 24px;
+}
+.khanhbeauty-testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.khanhbeauty-testimonial-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink-200), var(--pink-300));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}
+.khanhbeauty-testimonial-card__name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+.khanhbeauty-testimonial-card__role {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 8: NUMBERS / STATS BANNER
+   ═══════════════════════════════════════════ */
+.khanhbeauty-numbers {
+  padding: 60px 5%;
+  background: linear-gradient(135deg, var(--pink-500), var(--rose-gold));
+  position: relative;
+  overflow: hidden;
+}
+.khanhbeauty-numbers::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.khanhbeauty-numbers__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.khanhbeauty-numbers__item-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
+.khanhbeauty-numbers__item-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 9: BOOKING / CTA
+   ═══════════════════════════════════════════ */
+.khanhbeauty-booking {
+  padding: var(--section-padding) 5%;
+  background: var(--white);
+  text-align: center;
+}
+.khanhbeauty-booking__inner {
+  max-width: 700px;
+  margin: 0 auto;
+  background: linear-gradient(160deg, var(--pink-100) 0%, var(--cream-warm) 100%);
+  padding: 70px 60px;
+  border-radius: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.khanhbeauty-booking__inner::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--pink-200);
+  opacity: 0.3;
+}
+.khanhbeauty-booking__inner::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--rose-gold-light);
+  opacity: 0.2;
+}
+.khanhbeauty-booking h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+.khanhbeauty-booking h2 em {
+  color: var(--pink-500);
+  font-style: italic;
+}
+.khanhbeauty-booking p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-medium);
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+.khanhbeauty-booking__actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+.khanhbeauty-booking__btn {
+  padding: 16px 40px;
+  border-radius: 50px;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.khanhbeauty-booking__btn--primary {
+  background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+  color: white;
+  box-shadow: 0 8px 30px rgba(237, 100, 166, 0.3);
+}
+.khanhbeauty-booking__btn--primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(237, 100, 166, 0.5);
+}
+.khanhbeauty-booking__btn--secondary {
+  background: white;
+  color: var(--rose-gold);
+  border: 1.5px solid var(--rose-gold-light);
+}
+.khanhbeauty-booking__btn--secondary:hover {
+  background: var(--rose-gold);
+  color: white;
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+.khanhbeauty-footer {
+  padding: 60px 5% 30px;
+  background: var(--text-dark);
+  color: rgba(255,255,255,0.7);
+}
+.khanhbeauty-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+.khanhbeauty-footer__brand h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--pink-300);
+  margin-bottom: 12px;
+}
+.khanhbeauty-footer__brand p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.khanhbeauty-footer__col h4 {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 20px;
+}
+.khanhbeauty-footer__col ul {
+  list-style: none;
+}
+.khanhbeauty-footer__col li {
+  margin-bottom: 12px;
+}
+.khanhbeauty-footer__col a {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  transition: color 0.3s;
+}
+.khanhbeauty-footer__col a:hover { color: var(--pink-300); }
+.khanhbeauty-footer__bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .khanhbeauty-gallery__masonry { columns: 3; }
+  .khanhbeauty-services__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .khanhbeauty-nav__links, .khanhbeauty-nav__book { display: none; }
+  .khanhbeauty-about__grid { grid-template-columns: 1fr; gap: 40px; }
+  .khanhbeauty-about__image-diamond { width: 280px; height: 280px; }
+  .khanhbeauty-about__image-frame { width: 320px; height: 320px; }
+  .khanhbeauty-services__grid { grid-template-columns: 1fr; }
+  .khanhbeauty-showcase__item { grid-template-columns: 1fr; }
+  .khanhbeauty-showcase__item:nth-child(even) { direction: ltr; }
+  .khanhbeauty-showcase__content { padding: 40px 20px; }
+  .khanhbeauty-showcase__image { min-height: 350px; }
+  .khanhbeauty-ba__grid { grid-template-columns: 1fr; max-width: 400px; }
+  .khanhbeauty-gallery__masonry { columns: 2; }
+  .khanhbeauty-numbers__grid { grid-template-columns: repeat(2, 1fr); }
+  .khanhbeauty-footer__grid { grid-template-columns: 1fr 1fr; }
+  .khanhbeauty-booking__inner { padding: 40px 24px; }
+  .floating-cta { padding: 12px 24px; font-size: 13px; bottom: 20px; right: 20px; }
+}
+@media (max-width: 480px) {
+  .khanhbeauty-gallery__masonry { columns: 1; }
+  .khanhbeauty-about__stats { flex-direction: column; gap: 20px; }
+  .khanhbeauty-footer__grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ FLOATING CTA ═══ -->
+<button class="floating-cta" id="floatingCta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+  Đặt Lịch Ngay
+</button>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="khanhbeauty-nav" id="mainNav">
+  <div class="khanhbeauty-nav__logo">
+    Khánh Beauty
+    <span>makeup artist</span>
+  </div>
+  <ul class="khanhbeauty-nav__links">
+    <li><a href="#about">Giới thiệu</a></li>
+    <li><a href="#services">Dịch vụ</a></li>
+    <li><a href="#showcase">Kỹ năng</a></li>
+    <li><a href="#gallery">Portfolio</a></li>
+    <li><a href="#testimonials">Đánh giá</a></li>
+  </ul>
+  <button class="khanhbeauty-nav__book" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Đặt Lịch</button>
+</nav>
+
+<!-- ═══ SECTION 1: HERO ═══ -->
+<section class="khanhbeauty-hero">
+  <div class="khanhbeauty-hero__decor-circle"></div>
+  <div class="khanhbeauty-hero__decor-circle"></div>
+  <div class="khanhbeauty-hero__decor-circle"></div>
+
+  <svg class="khanhbeauty-hero__brush" viewBox="0 0 800 200" fill="none">
+    <path d="M50 100C150 30 250 170 400 100C550 30 650 170 750 100" stroke="var(--pink-300)" stroke-width="80" stroke-linecap="round" opacity="0.15"/>
+  </svg>
+
+  <div class="khanhbeauty-hero__content">
+    <div class="khanhbeauty-hero__badge">✦ Professional Makeup Artist ✦</div>
+    <h1 class="khanhbeauty-hero__title">
+      Khánh <em>Beauty</em>
+    </h1>
+    <p class="khanhbeauty-hero__subtitle">Nghệ thuật trang điểm — Tôn vinh vẻ đẹp của bạn</p>
+    <div class="khanhbeauty-hero__cta-group">
+      <button class="khanhbeauty-hero__cta khanhbeauty-hero__cta--primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Đặt Lịch Makeup</button>
+      <button class="khanhbeauty-hero__cta khanhbeauty-hero__cta--secondary" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Xem Portfolio</button>
+    </div>
+  </div>
+
+  <div class="khanhbeauty-hero__scroll">
+    <span>Cuộn xuống</span>
+    <div class="khanhbeauty-hero__scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 2: ABOUT ═══ -->
+<section class="khanhbeauty-about" id="about">
+  <div class="khanhbeauty-about__grid">
+    <div class="khanhbeauty-about__image-wrap reveal-left">
+      <div class="khanhbeauty-about__image-diamond">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FED7E2'/%3E%3Cstop offset='1' stop-color='%23FBB6CE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='400' height='400'/%3E%3Ctext x='200' y='185' text-anchor='middle' font-family='serif' font-size='24' fill='%23D53F8C' opacity='.4'%3EẢnh Khánh%3C/text%3E%3Ctext x='200' y='215' text-anchor='middle' font-family='sans-serif' font-size='14' fill='%23D53F8C' opacity='.3'%3EBeauty Artist%3C/text%3E%3C/svg%3E" alt="Khánh Beauty">
+      </div>
+      <div class="khanhbeauty-about__image-frame"></div>
+      <div class="khanhbeauty-about__exp-badge reveal">
+        <strong>5+</strong>
+        <span>Năm kinh nghiệm</span>
+      </div>
+    </div>
+
+    <div class="khanhbeauty-about__text reveal-right">
+      <span class="section-label">Về tôi</span>
+      <h2>Xin chào, mình là <em>Khánh</em> — người sẽ giúp bạn toả sáng</h2>
+      <p>Với niềm đam mê trang điểm từ nhỏ, mình đã dành nhiều năm học hỏi và trau dồi kỹ năng để mang đến cho mỗi khách hàng một diện mạo hoàn hảo nhất. Từ cô dâu trong ngày trọng đại, đến các bạn sinh viên muốn tự tin hơn — mình luôn lắng nghe và thấu hiểu.</p>
+      <p>Không chỉ là makeup, mình muốn mỗi lần ngồi trước gương cùng bạn là một trải nghiệm vui vẻ, thoải mái và đáng nhớ.</p>
+      
+      <div class="khanhbeauty-about__stats stagger-children">
+        <div class="khanhbeauty-about__stat-item reveal">
+          <div class="khanhbeauty-about__stat-num" data-count="500">0</div>
+          <div class="khanhbeauty-about__stat-label">Khách hàng</div>
+        </div>
+        <div class="khanhbeauty-about__stat-item reveal">
+          <div class="khanhbeauty-about__stat-num" data-count="200">0</div>
+          <div class="khanhbeauty-about__stat-label">Cô dâu</div>
+        </div>
+        <div class="khanhbeauty-about__stat-item reveal">
+          <div class="khanhbeauty-about__stat-num" data-count="50">0</div>
+          <div class="khanhbeauty-about__stat-label">Học viên</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 3: SERVICES ═══ -->
+<section class="khanhbeauty-services" id="services">
+  <div class="khanhbeauty-services__header reveal">
+    <span class="section-label">Dịch vụ</span>
+    <h2>Mình có thể giúp bạn điều gì?</h2>
+  </div>
+
+  <div class="khanhbeauty-services__grid stagger-children">
+    <div class="khanhbeauty-service-card reveal">
+      <div class="khanhbeauty-service-card__icon">💄</div>
+      <h3>Makeup Cô Dâu</h3>
+      <p>Trang điểm chuyên nghiệp cho ngày cưới. Bền đẹp suốt 12 giờ, phù hợp concept & áo dài / váy cưới.</p>
+      <div class="khanhbeauty-service-card__price">Từ 2.500K <small>/ buổi</small></div>
+    </div>
+
+    <div class="khanhbeauty-service-card reveal">
+      <div class="khanhbeauty-service-card__icon">🎓</div>
+      <h3>Makeup Sự Kiện</h3>
+      <p>Trang điểm cho tiệc, lễ tốt nghiệp, chụp ảnh profile. Tone makeup nhẹ nhàng, tự nhiên hoặc glamour tùy ý.</p>
+      <div class="khanhbeauty-service-card__price">Từ 800K <small>/ buổi</small></div>
+    </div>
+
+    <div class="khanhbeauty-service-card reveal">
+      <div class="khanhbeauty-service-card__icon">📸</div>
+      <h3>Makeup Chụp Ảnh</h3>
+      <p>Phối hợp cùng photographer để tạo look hoàn hảo cho shoot ảnh concept, lookbook, bộ ảnh kỷ yếu.</p>
+      <div class="khanhbeauty-service-card__price">Từ 1.000K <small>/ buổi</small></div>
+    </div>
+
+    <div class="khanhbeauty-service-card reveal">
+      <div class="khanhbeauty-service-card__icon">🌸</div>
+      <h3>Makeup Nhẹ Nhàng</h3>
+      <p>Dành cho các bạn sinh viên, dự tiệc nhẹ, đi chơi cuối tuần. Makeup tự nhiên, trong trẻo, đúng tuổi.</p>
+      <div class="khanhbeauty-service-card__price">Từ 400K <small>/ buổi</small></div>
+    </div>
+
+    <div class="khanhbeauty-service-card reveal">
+      <div class="khanhbeauty-service-card__icon">🎨</div>
+      <h3>Đào Tạo Makeup</h3>
+      <p>Khoá học 1-1 hoặc nhóm nhỏ. Từ cơ bản đến nâng cao, mình sẽ dạy bạn cách tự trang điểm đẹp mỗi ngày.</p>
+      <div class="khanhbeauty-service-card__price">Từ 3.000K <small>/ khoá</small></div>
+    </div>
+
+    <div class="khanhbeauty-service-card reveal">
+      <div class="khanhbeauty-service-card__icon">💅</div>
+      <h3>Tư Vấn Skincare</h3>
+      <p>Tư vấn chăm sóc da phù hợp với từng loại da, giúp bạn có làn da khoẻ đẹp — nền tảng của mọi lớp makeup.</p>
+      <div class="khanhbeauty-service-card__price">Miễn phí <small>khi book makeup</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 4: SKILLS SHOWCASE ═══ -->
+<section class="khanhbeauty-showcase" id="showcase">
+  <div class="khanhbeauty-showcase__header reveal">
+    <span class="section-label">Kỹ năng thực chiến</span>
+    <h2>Từng đường nét, từng chi tiết — đều là nghệ thuật</h2>
+  </div>
+
+  <!-- Skill 1: Kẻ mắt -->
+  <div class="khanhbeauty-showcase__item">
+    <div class="khanhbeauty-showcase__image reveal-left">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='500'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FBB6CE'/%3E%3Cstop offset='1' stop-color='%23F687B3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='600' height='500'/%3E%3Ctext x='300' y='235' text-anchor='middle' font-family='serif' font-size='20' fill='white' opacity='.5'%3EKhánh đang kẻ mắt cho cô dâu%3C/text%3E%3Ctext x='300' y='270' text-anchor='middle' font-family='serif' font-size='16' fill='white' opacity='.3'%3EPlaceholder — Thay ảnh thật%3C/text%3E%3C/svg%3E" alt="Kỹ năng kẻ mắt">
+      <div class="khanhbeauty-showcase__image-tag">✦ Makeup Cô Dâu</div>
+    </div>
+    <div class="khanhbeauty-showcase__content reveal-right">
+      <div class="khanhbeauty-showcase__step-num">01</div>
+      <h3>Kẻ Mắt — Đôi mắt kể câu chuyện</h3>
+      <p>Mỗi đôi mắt có một hình dáng riêng. Mình không áp dụng công thức chung cho tất cả — mà sẽ phân tích dáng mắt, hốc mắt để tạo đường kẻ eyeliner phù hợp nhất. Từ cat-eye sắc sảo đến puppy-eye ngọt ngào.</p>
+      <div class="khanhbeauty-showcase__skill-tags">
+        <span class="khanhbeauty-showcase__skill-tag">Cat Eye</span>
+        <span class="khanhbeauty-showcase__skill-tag">Puppy Eye</span>
+        <span class="khanhbeauty-showcase__skill-tag">Smoky Eye</span>
+        <span class="khanhbeauty-showcase__skill-tag">Cut Crease</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill 2: Đánh son -->
+  <div class="khanhbeauty-showcase__item">
+    <div class="khanhbeauty-showcase__image reveal-right">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='500'%3E%3Cdefs%3E%3ClinearGradient id='b' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ED64A6'/%3E%3Cstop offset='1' stop-color='%23B76E79'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23b)' width='600' height='500'/%3E%3Ctext x='300' y='235' text-anchor='middle' font-family='serif' font-size='20' fill='white' opacity='.5'%3EKhánh đang đánh son cho bạn học%3C/text%3E%3Ctext x='300' y='270' text-anchor='middle' font-family='serif' font-size='16' fill='white' opacity='.3'%3EPlaceholder — Thay ảnh thật%3C/text%3E%3C/svg%3E" alt="Kỹ năng đánh son">
+      <div class="khanhbeauty-showcase__image-tag">✦ Makeup Bạn Bè</div>
+    </div>
+    <div class="khanhbeauty-showcase__content reveal-left">
+      <div class="khanhbeauty-showcase__step-num">02</div>
+      <h3>Đánh Son — Nụ cười thêm rạng rỡ</h3>
+      <p>Son không chỉ là tô màu lên môi. Mình sẽ chọn tông son phù hợp tông da, bối cảnh, trang phục. Kỹ thuật ombre lips, gradient lips hay full lips — tất cả đều được thực hiện tỉ mỉ từng lớp.</p>
+      <div class="khanhbeauty-showcase__skill-tags">
+        <span class="khanhbeauty-showcase__skill-tag">Ombre Lips</span>
+        <span class="khanhbeauty-showcase__skill-tag">Gradient Lips</span>
+        <span class="khanhbeauty-showcase__skill-tag">Full Lips</span>
+        <span class="khanhbeauty-showcase__skill-tag">Overlining</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill 3: Contour -->
+  <div class="khanhbeauty-showcase__item">
+    <div class="khanhbeauty-showcase__image reveal-left">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='500'%3E%3Cdefs%3E%3ClinearGradient id='c' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23D4A0A7'/%3E%3Cstop offset='1' stop-color='%23C9A96E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23c)' width='600' height='500'/%3E%3Ctext x='300' y='235' text-anchor='middle' font-family='serif' font-size='20' fill='white' opacity='.5'%3EKhánh đang contour cho khách%3C/text%3E%3Ctext x='300' y='270' text-anchor='middle' font-family='serif' font-size='16' fill='white' opacity='.3'%3EPlaceholder — Thay ảnh thật%3C/text%3E%3C/svg%3E" alt="Kỹ năng contour">
+      <div class="khanhbeauty-showcase__image-tag">✦ Khách Book Online</div>
+    </div>
+    <div class="khanhbeauty-showcase__content reveal-right">
+      <div class="khanhbeauty-showcase__step-num">03</div>
+      <h3>Contour & Highlight — Gương mặt 3D tự nhiên</h3>
+      <p>Contour đúng cách không phải để "fake" mà để tôn vinh đường nét sẵn có. Mình sử dụng kỹ thuật blending chuyên sâu, kết hợp highlight tinh tế để gương mặt bạn sáng bừng dưới mọi ánh sáng.</p>
+      <div class="khanhbeauty-showcase__skill-tags">
+        <span class="khanhbeauty-showcase__skill-tag">Soft Contour</span>
+        <span class="khanhbeauty-showcase__skill-tag">Baking</span>
+        <span class="khanhbeauty-showcase__skill-tag">Strobing</span>
+        <span class="khanhbeauty-showcase__skill-tag">Glass Skin</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 5: BEFORE / AFTER ═══ -->
+<section class="khanhbeauty-ba" id="beforeafter">
+  <div class="khanhbeauty-ba__header reveal">
+    <span class="section-label">Trước & Sau</span>
+    <h2>Kéo thanh trượt để cảm nhận sự khác biệt</h2>
+  </div>
+
+  <div class="khanhbeauty-ba__grid stagger-children">
+    <!-- Slider 1 -->
+    <div class="reveal">
+      <div class="khanhbeauty-ba__slider" data-ba-slider>
+        <img class="khanhbeauty-ba__img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='530'%3E%3Crect fill='%23E8D5B0' width='400' height='530'/%3E%3Ctext x='200' y='260' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23B76E79'%3EBEFORE%3C/text%3E%3C/svg%3E" alt="Before">
+        <img class="khanhbeauty-ba__img khanhbeauty-ba__img--after" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='530'%3E%3Crect fill='%23FBB6CE' width='400' height='530'/%3E%3Ctext x='200' y='260' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23D53F8C'%3EAFTER%3C/text%3E%3C/svg%3E" alt="After">
+        <div class="khanhbeauty-ba__divider"></div>
+        <span class="khanhbeauty-ba__label khanhbeauty-ba__label--before">Trước</span>
+        <span class="khanhbeauty-ba__label khanhbeauty-ba__label--after">Sau</span>
+      </div>
+      <p class="khanhbeauty-ba__slider-caption">Cô dâu Minh Anh — Ngày cưới</p>
+    </div>
+
+    <!-- Slider 2 -->
+    <div class="reveal">
+      <div class="khanhbeauty-ba__slider" data-ba-slider>
+        <img class="khanhbeauty-ba__img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='530'%3E%3Crect fill='%23E8D5B0' width='400' height='530'/%3E%3Ctext x='200' y='260' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23B76E79'%3EBEFORE%3C/text%3E%3C/svg%3E" alt="Before">
+        <img class="khanhbeauty-ba__img khanhbeauty-ba__img--after" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='530'%3E%3Crect fill='%23FBB6CE' width='400' height='530'/%3E%3Ctext x='200' y='260' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23D53F8C'%3EAFTER%3C/text%3E%3C/svg%3E" alt="After">
+        <div class="khanhbeauty-ba__divider"></div>
+        <span class="khanhbeauty-ba__label khanhbeauty-ba__label--before">Trước</span>
+        <span class="khanhbeauty-ba__label khanhbeauty-ba__label--after">Sau</span>
+      </div>
+      <p class="khanhbeauty-ba__slider-caption">Bạn Thuỳ Linh — Lễ tốt nghiệp</p>
+    </div>
+
+    <!-- Slider 3 -->
+    <div class="reveal">
+      <div class="khanhbeauty-ba__slider" data-ba-slider>
+        <img class="khanhbeauty-ba__img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='530'%3E%3Crect fill='%23E8D5B0' width='400' height='530'/%3E%3Ctext x='200' y='260' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23B76E79'%3EBEFORE%3C/text%3E%3C/svg%3E" alt="Before">
+        <img class="khanhbeauty-ba__img khanhbeauty-ba__img--after" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='530'%3E%3Crect fill='%23FBB6CE' width='400' height='530'/%3E%3Ctext x='200' y='260' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23D53F8C'%3EAFTER%3C/text%3E%3C/svg%3E" alt="After">
+        <div class="khanhbeauty-ba__divider"></div>
+        <span class="khanhbeauty-ba__label khanhbeauty-ba__label--before">Trước</span>
+        <span class="khanhbeauty-ba__label khanhbeauty-ba__label--after">Sau</span>
+      </div>
+      <p class="khanhbeauty-ba__slider-caption">Chị Hương — Book online</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 6: GALLERY ═══ -->
+<section class="khanhbeauty-gallery" id="gallery">
+  <div class="khanhbeauty-gallery__header reveal">
+    <span class="section-label">Portfolio</span>
+    <h2>Bộ sưu tập các tác phẩm của mình</h2>
+  </div>
+
+  <div class="khanhbeauty-gallery__filters reveal">
+    <button class="khanhbeauty-gallery__filter active" data-filter="all">Tất cả</button>
+    <button class="khanhbeauty-gallery__filter" data-filter="bride">Cô dâu</button>
+    <button class="khanhbeauty-gallery__filter" data-filter="event">Sự kiện</button>
+    <button class="khanhbeauty-gallery__filter" data-filter="daily">Thường ngày</button>
+    <button class="khanhbeauty-gallery__filter" data-filter="photo">Chụp ảnh</button>
+  </div>
+
+  <div class="khanhbeauty-gallery__masonry stagger-children" id="galleryGrid">
+    <!-- Gallery items generated by JS -->
+  </div>
+</section>
+
+<!-- ═══ SECTION 7: TESTIMONIALS ═══ -->
+<section class="khanhbeauty-testimonials" id="testimonials">
+  <div class="khanhbeauty-testimonials__header reveal">
+    <span class="section-label">Khách hàng nói gì</span>
+    <h2>Những lời yêu thương mình nhận được</h2>
+  </div>
+
+  <div class="khanhbeauty-testimonials__track reveal">
+    <div class="khanhbeauty-testimonial-card">
+      <div class="khanhbeauty-testimonial-card__stars">★★★★★</div>
+      <p class="khanhbeauty-testimonial-card__text">"Khánh makeup cho mình ngày cưới, ai cũng khen đẹp tự nhiên mà vẫn rạng rỡ. Quan trọng nhất là lớp makeup trụ được cả ngày dài, không bị chảy hay xuống tone!"</p>
+      <div class="khanhbeauty-testimonial-card__author">
+        <div class="khanhbeauty-testimonial-card__avatar">MA</div>
+        <div>
+          <div class="khanhbeauty-testimonial-card__name">Minh Anh</div>
+          <div class="khanhbeauty-testimonial-card__role">Cô dâu — Hà Nội</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="khanhbeauty-testimonial-card">
+      <div class="khanhbeauty-testimonial-card__stars">★★★★★</div>
+      <p class="khanhbeauty-testimonial-card__text">"Mình book Khánh cho buổi chụp kỷ yếu cả lớp. Bạn ấy makeup nhanh, đẹp mà giá cả hợp lý lắm. Cả lớp ai cũng xinh, ảnh lên lung linh luôn!"</p>
+      <div class="khanhbeauty-testimonial-card__author">
+        <div class="khanhbeauty-testimonial-card__avatar">TL</div>
+        <div>
+          <div class="khanhbeauty-testimonial-card__name">Thuỳ Linh</div>
+          <div class="khanhbeauty-testimonial-card__role">Sinh viên — Đà Nẵng</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="khanhbeauty-testimonial-card">
+      <div class="khanhbeauty-testimonial-card__stars">★★★★★</div>
+      <p class="khanhbeauty-testimonial-card__text">"Lần đầu book makeup online mà gặp được Khánh là may mắn. Bạn ấy rất tận tâm, lắng nghe mình muốn gì và tư vấn rất nhiệt tình. Chắc chắn sẽ quay lại!"</p>
+      <div class="khanhbeauty-testimonial-card__author">
+        <div class="khanhbeauty-testimonial-card__avatar">H</div>
+        <div>
+          <div class="khanhbeauty-testimonial-card__name">Chị Hương</div>
+          <div class="khanhbeauty-testimonial-card__role">Khách book online — Sài Gòn</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="khanhbeauty-testimonial-card">
+      <div class="khanhbeauty-testimonial-card__stars">★★★★★</div>
+      <p class="khanhbeauty-testimonial-card__text">"Mình học khoá makeup cá nhân với Khánh. Giờ mình tự tin trang điểm đi làm mỗi ngày rồi. Cách dạy dễ hiểu, thực hành nhiều, rất phù hợp cho người mới."</p>
+      <div class="khanhbeauty-testimonial-card__author">
+        <div class="khanhbeauty-testimonial-card__avatar">LN</div>
+        <div>
+          <div class="khanhbeauty-testimonial-card__name">Lan Ngọc</div>
+          <div class="khanhbeauty-testimonial-card__role">Học viên — Hà Nội</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 8: NUMBERS ═══ -->
+<section class="khanhbeauty-numbers">
+  <div class="khanhbeauty-numbers__grid stagger-children">
+    <div class="reveal">
+      <div class="khanhbeauty-numbers__item-num" data-count="500">0+</div>
+      <div class="khanhbeauty-numbers__item-label">Khách hàng hài lòng</div>
+    </div>
+    <div class="reveal">
+      <div class="khanhbeauty-numbers__item-num" data-count="200">0+</div>
+      <div class="khanhbeauty-numbers__item-label">Cô dâu xinh đẹp</div>
+    </div>
+    <div class="reveal">
+      <div class="khanhbeauty-numbers__item-num" data-count="5">0+</div>
+      <div class="khanhbeauty-numbers__item-label">Năm kinh nghiệm</div>
+    </div>
+    <div class="reveal">
+      <div class="khanhbeauty-numbers__item-num" data-count="50">0+</div>
+      <div class="khanhbeauty-numbers__item-label">Học viên đào tạo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTION 9: BOOKING CTA ═══ -->
+<section class="khanhbeauty-booking" id="booking">
+  <div class="khanhbeauty-booking__inner reveal-scale">
+    <h2>Sẵn sàng <em>toả sáng</em> chưa?</h2>
+    <p>Đặt lịch ngay hôm nay để mình cùng bạn tạo nên diện mạo hoàn hảo nhất. Tư vấn miễn phí, cam kết chất lượng.</p>
+    <div class="khanhbeauty-booking__actions">
+      <button class="khanhbeauty-booking__btn khanhbeauty-booking__btn--primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        Gọi ngay: 0xxx.xxx.xxx
+      </button>
+      <button class="khanhbeauty-booking__btn khanhbeauty-booking__btn--secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Nhắn Zalo
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="khanhbeauty-footer">
+  <div class="khanhbeauty-footer__grid">
+    <div class="khanhbeauty-footer__brand">
+      <h3>Khánh Beauty</h3>
+      <p>Makeup Artist chuyên nghiệp — Nơi nghệ thuật gặp gỡ vẻ đẹp. Đồng hành cùng bạn trong mọi khoảnh khắc đáng nhớ.</p>
+    </div>
+    <div class="khanhbeauty-footer__col">
+      <h4>Dịch vụ</h4>
+      <ul>
+        <li><a href="#">Makeup Cô Dâu</a></li>
+        <li><a href="#">Makeup Sự Kiện</a></li>
+        <li><a href="#">Makeup Chụp Ảnh</a></li>
+        <li><a href="#">Đào Tạo Makeup</a></li>
+      </ul>
+    </div>
+    <div class="khanhbeauty-footer__col">
+      <h4>Liên kết</h4>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Zalo</a></li>
+      </ul>
+    </div>
+    <div class="khanhbeauty-footer__col">
+      <h4>Liên hệ</h4>
+      <ul>
+        <li><a href="#">0xxx.xxx.xxx</a></li>
+        <li><a href="#">khanh@beauty.vn</a></li>
+        <li><a href="#">Hà Nội, Việt Nam</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="khanhbeauty-footer__bottom">
+    &copy; 2026 Khánh Beauty. Thiết kế với ♥ 
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  // ─── Scroll reveal (IntersectionObserver) ───
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ─── Nav scroll effect ───
+  const nav = document.getElementById('mainNav');
+  const floatingCta = document.getElementById('floatingCta');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    nav.classList.toggle('scrolled', scrollY > 80);
+    floatingCta.classList.toggle('show', scrollY > 600);
+  });
+
+  // ─── Counter animation ───
+  const countEls = document.querySelectorAll('[data-count]');
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.count);
+        let current = 0;
+        const increment = target / 60;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            el.textContent = target + '+';
+            clearInterval(timer);
+          } else {
+            el.textContent = Math.floor(current) + '+';
+          }
+        }, 25);
+        countObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  countEls.forEach(el => countObserver.observe(el));
+
+  // ─── Before/After sliders ───
+  document.querySelectorAll('[data-ba-slider]').forEach(slider => {
+    let isDragging = false;
+    const afterImg = slider.querySelector('.khanhbeauty-ba__img--after');
+    const divider = slider.querySelector('.khanhbeauty-ba__divider');
+
+    function updateSlider(x) {
+      const rect = slider.getBoundingClientRect();
+      let percent = ((x - rect.left) / rect.width) * 100;
+      percent = Math.max(5, Math.min(95, percent));
+      afterImg.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+      divider.style.left = percent + '%';
+    }
+
+    slider.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(e.clientX); });
+    slider.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(e.touches[0].clientX); }, {passive: true});
+    window.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
+    window.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(e.touches[0].clientX); }, {passive: true});
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('touchend', () => isDragging = false);
+  });
+
+  // ─── Gallery filter ───
+  const filters = document.querySelectorAll('.khanhbeauty-gallery__filter');
+  filters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filters.forEach(f => f.classList.remove('active'));
+      btn.classList.add('active');
+      // In production: filter gallery items by data-filter
+    });
+  });
+
+  // ─── Generate placeholder gallery items ───
+  const galleryGrid = document.getElementById('galleryGrid');
+  const galleryData = [
+    { h: 350, label: 'Cô dâu Phương Anh', cat: 'Makeup cưới', color: '#FBB6CE' },
+    { h: 280, label: 'Bạn Hà My', cat: 'Makeup nhẹ', color: '#FED7E2' },
+    { h: 400, label: 'Chị Thanh', cat: 'Sự kiện', color: '#F687B3' },
+    { h: 300, label: 'Bạn Ngọc Ánh', cat: 'Chụp ảnh', color: '#D4A0A7' },
+    { h: 360, label: 'Cô dâu Thu Hà', cat: 'Makeup cưới', color: '#ED64A6' },
+    { h: 320, label: 'Bạn Yến Nhi', cat: 'Kỷ yếu', color: '#FBB6CE' },
+    { h: 280, label: 'Chị Linh', cat: 'Dự tiệc', color: '#E8D5B0' },
+    { h: 380, label: 'Cô dâu Hải Yến', cat: 'Makeup cưới', color: '#B76E79' },
+    { h: 300, label: 'Bạn Trâm', cat: 'Makeup nhẹ', color: '#FED7E2' },
+    { h: 340, label: 'Chị Mai', cat: 'Sự kiện', color: '#F687B3' },
+    { h: 290, label: 'Bạn Quỳnh', cat: 'Chụp ảnh', color: '#D4A0A7' },
+    { h: 360, label: 'Cô dâu Bích Ngọc', cat: 'Makeup cưới', color: '#FBB6CE' },
+  ];
+
+  galleryData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'khanhbeauty-gallery__item reveal';
+    div.innerHTML = `
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='${item.h}'%3E%3Crect fill='${encodeURIComponent(item.color)}' width='400' height='${item.h}'/%3E%3Ctext x='200' y='${item.h/2}' text-anchor='middle' font-family='sans-serif' font-size='14' fill='white' opacity='.6'%3E${encodeURIComponent(item.label)}%3C/text%3E%3C/svg%3E" alt="${item.label}" style="height:${item.h}px;">
+      <div class="khanhbeauty-gallery__item-overlay">
+        <div class="khanhbeauty-gallery__item-info">
+          <h4>${item.label}</h4>
+          <span>${item.cat}</span>
+        </div>
+      </div>
+    `;
+    galleryGrid.appendChild(div);
+    // Re-observe new elements
+    revealObserver.observe(div);
+  });
+
+  // ─── Parallax on showcase images ───
+  const showcaseImages = document.querySelectorAll('.khanhbeauty-showcase__image img');
+  window.addEventListener('scroll', () => {
+    showcaseImages.forEach(img => {
+      const rect = img.parentElement.getBoundingClientRect();
+      const speed = 0.15;
+      const yPos = (rect.top - window.innerHeight) * speed;
+      img.style.transform = `translateY(${yPos}px) scale(1.08)`;
+    });
+  }, { passive: true });
+
+})();
+</script>
+
+</body>
+</html>
