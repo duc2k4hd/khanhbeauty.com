@@ -18,13 +18,13 @@
         <div style="border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff;">
             {{-- Before/After Preview --}}
             <div style="position:relative;height:160px;background:#f8f8f8;display:flex;">
-                @if($item->before_image)
-                    <img src="{{ $item->before_image }}" style="width:50%;object-fit:cover;" title="Trước">
+                @if($item->beforeImage?->file_url)
+                    <img src="{{ $item->beforeImage->file_url }}" style="width:50%;object-fit:cover;" title="Trước">
                 @else
                     <div style="width:50%;display:flex;align-items:center;justify-content:center;font-size:30px;color:#ddd;">📷</div>
                 @endif
-                @if($item->after_image)
-                    <img src="{{ $item->after_image }}" style="width:50%;object-fit:cover;border-left:2px solid white;" title="Sau">
+                @if($item->afterImage?->file_url)
+                    <img src="{{ $item->afterImage->file_url }}" style="width:50%;object-fit:cover;border-left:2px solid white;" title="Sau">
                 @else
                     <div style="width:50%;display:flex;align-items:center;justify-content:center;font-size:30px;color:#ddd;border-left:2px solid #f0f0f0;">✨</div>
                 @endif

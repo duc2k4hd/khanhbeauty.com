@@ -19,7 +19,8 @@ class UserInfolist
                     ->label('Email address'),
                 TextEntry::make('phone')
                     ->placeholder('-'),
-                TextEntry::make('avatar_url')
+                TextEntry::make('avatar.file_url')
+                    ->label('Avatar URL')
                     ->placeholder('-'),
                 TextEntry::make('role')
                     ->badge(),

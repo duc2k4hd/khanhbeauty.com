@@ -106,7 +106,7 @@ class BookingController extends Controller
 
         // Tính end_time (giả sử mỗi dịch vụ kéo dài theo duration hoặc mặc định 60p)
         $service = Service::find($validated['service_id']);
-        $duration = $service ? $service->duration_minutes : 60;
+        $duration = (int) ($service ? ($service->duration_minutes ?: 60) : 60);
         
         $bookingTime = Carbon::createFromFormat('Y-m-d H:i', $validated['booking_date'] . ' ' . $validated['booking_time']);
         $bookingData['end_time'] = $bookingTime->copy()->addMinutes($duration)->format('H:i:s');

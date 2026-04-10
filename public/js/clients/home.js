@@ -5,18 +5,7 @@
 (function() {
   'use strict';
 
-  // ─── Scroll Reveal (IntersectionObserver) ───
-  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
-  if (revealEls.length > 0) {
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-    revealEls.forEach(el => revealObserver.observe(el));
-  }
+
 
   // ─── Counter Animation ───
   const countEls = document.querySelectorAll('[data-count]');
@@ -52,7 +41,7 @@
   const baSliders = document.querySelectorAll('[data-ba-slider]');
   baSliders.forEach(slider => {
     let isDragging = false;
-    const afterImg = slider.querySelector('.khanhbeauty-ba__img--after');
+    const beforeImg = slider.querySelector('.khanhbeauty-ba__img--before');
     const divider = slider.querySelector('.khanhbeauty-ba__divider');
 
     // Chống hành vi kéo ảnh mặc định của trình duyệt gây kẹt isDragging
@@ -64,7 +53,7 @@
       const rect = slider.getBoundingClientRect();
       let percent = ((x - rect.left) / rect.width) * 100;
       percent = Math.max(0, Math.min(100, percent));
-      if (afterImg) afterImg.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+      if (beforeImg) beforeImg.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
       if (divider) divider.style.left = percent + '%';
     }
 
@@ -90,10 +79,26 @@
 
   // ─── Gallery Filter Click Effect ───
   const filters = document.querySelectorAll('.khanhbeauty-gallery__filter');
+  const galleryItemsDOM = document.querySelectorAll('.khanhbeauty-gallery__item');
+  
   filters.forEach(btn => {
     btn.addEventListener('click', () => {
       filters.forEach(f => f.classList.remove('active'));
       btn.classList.add('active');
+      
+      const filterValue = btn.getAttribute('data-filter');
+      
+      galleryItemsDOM.forEach(item => {
+        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+          item.style.display = 'block';
+          // Trigger reflow for animation restart
+          item.style.animation = 'none';
+          item.offsetHeight; 
+          item.style.animation = null; 
+        } else {
+          item.style.display = 'none';
+        }
+      });
     });
   });
 

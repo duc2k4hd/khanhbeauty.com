@@ -37,8 +37,7 @@ class PostForm
                         // ── Ảnh đại diện → lưu featured_image_id ──
                         FileUpload::make('featured_image_id')
                             ->label('Ảnh đại diện bài viết')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                             ->disk('public')
                             ->directory('posts')
                             ->saveUploadedFileUsing(function ($file) {
@@ -74,8 +73,7 @@ class PostForm
                         // ── Ảnh OG → lưu og_image_id ───────────────
                         FileUpload::make('og_image_id')
                             ->label('Ảnh OG (Social Sharing)')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                             ->disk('public')
                             ->directory('posts/og')
                             ->saveUploadedFileUsing(function ($file) {

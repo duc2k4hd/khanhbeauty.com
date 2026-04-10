@@ -13,6 +13,14 @@
                 </a>
             </li>
             
+            <li class="nav-heading">QUẢN LÝ NỘI DUNG</li>
+            <li class="{{ request()->routeIs('admin.homepage.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.homepage.index') }}">
+                    <svg viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" fill="none" d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"></path></svg>
+                    <span>Quản Lý Trang Chủ</span>
+                </a>
+            </li>
+
             <li class="nav-heading">QUẢN LÝ DỊCH VỤ</li>
             <li class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.services.index') }}">

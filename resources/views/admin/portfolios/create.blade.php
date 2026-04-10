@@ -28,11 +28,13 @@
                     <label>Ảnh TRƯỚC (Before)</label>
                     <input type="file" name="before_image" class="kb-form-control kb-form-file" accept="image/*" id="beforeInput">
                     <img id="beforePreview" src="" style="max-width:100%;border-radius:8px;margin-top:8px;display:none;">
+                    @error('before_image')<div style="color:red;font-size:13px;margin-top:5px;">{{ $message }}</div>@enderror
                 </div>
                 <div class="kb-form-group">
                     <label>Ảnh SAU (After) <span style="color:var(--primary)">✨</span></label>
                     <input type="file" name="after_image" class="kb-form-control kb-form-file" accept="image/*" id="afterInput">
                     <img id="afterPreview" src="" style="max-width:100%;border-radius:8px;margin-top:8px;display:none;">
+                    @error('after_image')<div style="color:red;font-size:13px;margin-top:5px;">{{ $message }}</div>@enderror
                 </div>
                 <div class="kb-form-group" style="grid-column:span 2;">
                     <label>Mô tả thêm</label>
@@ -40,7 +42,7 @@
                 </div>
                 <div class="kb-form-group">
                     <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-                        <input type="checkbox" name="is_featured" value="1" style="width:18px;height:18px;accent-color:var(--primary);">
+                        <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }} style="width:18px;height:18px;accent-color:var(--primary);">
                         <span>Hiển thị ở mục Nổi Bật</span>
                     </label>
                 </div>

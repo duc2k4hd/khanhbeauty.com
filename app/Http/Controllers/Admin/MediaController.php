@@ -3,269 +3,313 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Media;
-use Illuminate\Support\Facades\Storage;
+use App\Rules\AcceptedMediaLibraryUpload;
+use App\Services\MediaUploadService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // Thêm Log facade
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
-    /**
-     * API: Lấy danh sách Media (phân trang, lọc theo folder, search)
-     */
+    private const FOLDERS_CACHE_KEY = 'admin_media_folders_v3';
+    private const MAX_PER_PAGE = 200;
+
     public function index(Request $request)
     {
-        $query = Media::query();
+        $limit = max(1, min((int) $request->input('per_page', 50), self::MAX_PER_PAGE));
+        $cursorId = max(0, (int) $request->input('cursor_id', 0));
+        $query = Media::query()->select([
+            'id',
+            'file_name',
+            'file_url',
+            'mime_type',
+            'folder',
+            'alt_text',
+            'title',
+            'thumbnails',
+            'file_size_bytes',
+            'created_at',
+        ]);
 
-        // Lọc theo folder - Nếu để trống thì lấy tất cả
         if ($request->filled('folder')) {
-            $folder = $request->folder;
+            $folder = trim((string) $request->input('folder'), '/');
+
             if ($folder === 'root') {
-                $query->whereNull('folder')->orWhere('folder', '');
-            } else if ($folder !== 'all') {
-                $query->where('folder', $folder);
+                $query->where(function ($builder) {
+                    $builder->whereNull('folder')
+                        ->orWhere('folder', '');
+                });
+            } elseif ($folder !== 'all') {
+                $query->where(function ($builder) use ($folder) {
+                    $builder->where('folder', $folder)
+                        ->orWhere('folder', 'like', "{$folder}/%");
+                });
             }
         }
 
-        // Tìm kiếm
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('file_name', 'like', "%{$request->search}%")
-                  ->orWhere('title', 'like', "%{$request->search}%");
-            });
+            $search = trim((string) $request->input('search'));
+
+            if (mb_strlen($search) >= 2) {
+                $query->where(function ($builder) use ($search) {
+                    $builder->where('file_name', 'like', "%{$search}%")
+                        ->orWhere('title', 'like', "%{$search}%")
+                        ->orWhere('folder', 'like', "%{$search}%");
+                });
+            }
         }
 
-        // Lọc theo type (image, video, audio)
         if ($request->filled('type')) {
             $query->where('mime_type', 'like', "{$request->type}%");
         }
 
-        $perPage = $request->input('per_page', 50);
-        $media = $query->orderBy('created_at', 'desc')->paginate($perPage);
-
-        return response()->json($media);
-    }
-
-    /**
-     * API: Upload ảnh/video (Xử lý hàng loạt đợt 20 file)
-     */
-    public function store(Request $request)
-    {
-        Log::info("Media Upload Start: " . count($request->file('files', [])) . " files to folder '{$request->folder}'");
-        
-        try {
-            $request->validate([
-                'files.*' => 'required|file|extensions:jpg,jpeg,png,webp,avif,svg,ico,gif,mp4,mp3|max:102400', // Đã bổ sung ico, gif
-                'folder'  => 'nullable|string|max:100',
-            ]);
-        } catch (\Exception $e) {
-            Log::error("Media Validation Failed: " . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Lỗi kiểm định: ' . $e->getMessage()], 422);
+        if ($cursorId > 0) {
+            $query->where('id', '<', $cursorId);
         }
 
-        $uploaded = [];
-        $folderName = $request->input('folder', 'uploads');
-        $baseDir = $folderName; // Disk 'clients_public' đã trỏ vào public/images/clients/
+        $items = $query
+            ->orderByDesc('id')
+            ->limit($limit + 1)
+            ->get();
 
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $originalName = $file->getClientOriginalName();
-                Log::info("Processing file: " . $originalName);
-                
-                // Kiểm tra xem đã tồn tại bản ghi và file chưa để xử lý OVERWRITE
-                $existing = Media::where('folder', $folderName)
-                                 ->where('file_name', $originalName)
-                                 ->first();
+        $hasMore = $items->count() > $limit;
+        $data = $items->take($limit)->values();
+        $nextCursor = $hasMore ? $data->last()?->id : null;
 
-                if ($existing) {
-                    Log::info("Existing file found for '{$originalName}' in '{$folderName}'. Overwriting...");
-                    if (Storage::disk('clients_public')->exists($existing->file_path)) {
-                        Storage::disk('clients_public')->delete($existing->file_path);
-                    }
-                    
-                    // Lưu file mới với đúng tên gốc
-                    $path = $file->storeAs($baseDir, $originalName, 'clients_public');
-                    if (!$path) {
-                        Log::error("Failed to store file '{$originalName}' to disk.");
-                        continue;
-                    }
-                    
-                    $url = Storage::disk('clients_public')->url($path);
-
-                    // Cập nhật bản ghi cũ
-                    $existing->update([
-                        'file_path'       => $path,
-                        'file_url'        => $url,
-                        'mime_type'       => $file->getMimeType(),
-                        'file_size_bytes' => $file->getSize(),
-                        'is_optimized'    => false,
-                    ]);
-                    $uploaded[] = $existing;
-                    Log::info("Updated existing record ID: " . $existing->id);
-                } else {
-                    // Nếu chưa có: Lưu mới
-                    $path = $file->storeAs($baseDir, $originalName, 'clients_public');
-                    if (!$path) {
-                        Log::error("Failed to store new file '{$originalName}' to disk.");
-                        continue;
-                    }
-                    
-                    $url = Storage::disk('clients_public')->url($path);
-
-                    $media = Media::create([
-                        'uploader_id'     => Auth::id(),
-                        'file_name'       => $originalName,
-                        'file_path'       => $path,
-                        'file_url'        => $url,
-                        'disk'            => 'clients_public',
-                        'mime_type'       => $file->getMimeType() ?: 'image/avif', // Backup mime if null
-                        'file_size_bytes' => $file->getSize(),
-                        'folder'          => $folderName,
-                        'is_optimized'    => false,
-                        'image_type'      => $this->guessImageType($file),
-                    ]);
-                    
-                    if ($media) {
-                        $uploaded[] = $media;
-                        Log::info("Created new record ID: " . $media->id . " at " . $path);
-                    } else {
-                        Log::error("Failed to create DB record for '{$originalName}'.");
-                    }
-                }
-            }
-        }
-
-        Log::info("Media Upload Finished. Total successfully uploaded/overwritten: " . count($uploaded));
         return response()->json([
-            'success'   => true,
-            'message'   => 'Đã hoàn tất tải lên/ghi đè ' . count($uploaded) . ' tệp vào Public Storage.',
-            'data'      => $uploaded
+            'data' => $data,
+            'per_page' => $limit,
+            'has_more' => $hasMore,
+            'next_cursor' => $nextCursor,
         ]);
     }
 
-    /**
-     * API: Cập nhật thông tin Alt, Title...
-     */
+    public function store(Request $request)
+    {
+        Log::info('Media upload started', [
+            'folder' => $request->input('folder', 'uploads'),
+            'files' => count($request->file('files', [])),
+        ]);
+
+        try {
+            $request->validate([
+                'files' => ['required', 'array', 'min:1'],
+                'files.*' => ['required', 'file', new AcceptedMediaLibraryUpload(), 'max:102400'],
+                'folder' => ['nullable', 'string', 'max:100'],
+            ]);
+
+            $folder = trim((string) $request->input('folder', 'uploads'), '/');
+            $uploaded = [];
+
+            foreach ($request->file('files', []) as $file) {
+                $mediaId = MediaUploadService::uploadToDisk(
+                    $file,
+                    'clients_public',
+                    $folder,
+                    MediaUploadService::guessMediaKind($file),
+                    Auth::id()
+                );
+
+                $uploaded[] = Media::find($mediaId);
+            }
+
+            Log::info('Media upload finished', [
+                'folder' => $folder,
+                'uploaded' => count($uploaded),
+            ]);
+
+            $this->clearFolderCache();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Đã hoàn tất tải lên/ghi đè ' . count($uploaded) . ' tệp.',
+                'uploaded_count' => count($uploaded),
+                'data' => $uploaded,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Media upload failed', [
+                'message' => $e->getMessage(),
+                'folder' => $request->input('folder', 'uploads'),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể tải lên tệp. Vui lòng kiểm tra định dạng và thử lại.',
+            ], 422);
+        }
+    }
+
     public function update(Request $request, Media $media)
     {
         $data = $request->validate([
             'alt_text' => 'nullable|string|max:300',
-            'title'    => 'nullable|string|max:300',
-            'caption'  => 'nullable|string',
-            'folder'   => 'nullable|string|max:100',
+            'title' => 'nullable|string|max:300',
+            'caption' => 'nullable|string',
+            'folder' => 'nullable|string|max:100',
         ]);
 
         $media->update($data);
+        $this->clearFolderCache();
 
         return response()->json([
             'success' => true,
-            'message' => 'Đã cập nhật thông tin Media.',
-            'media'   => $media
+            'message' => 'Đã cập nhật thông tin media.',
+            'media' => $media,
         ]);
     }
 
     public function destroy(Media $media)
     {
-        Log::info("Delete Request: Media ID {$media->id}, Path: {$media->file_path}");
-        
-        if (Storage::disk('clients_public')->exists($media->file_path)) {
-            Storage::disk('clients_public')->delete($media->file_path);
-            Log::info("Physical file deleted: " . $media->file_path);
-        } else {
-            Log::warning("Physical file not found for deletion: " . $media->file_path);
+        $disk = $media->disk ?: 'clients_public';
+        $storage = Storage::disk($disk);
+
+        Log::info('Media delete request', [
+            'id' => $media->id,
+            'disk' => $disk,
+            'path' => $media->file_path,
+        ]);
+
+        if ($storage->exists($media->file_path)) {
+            $storage->delete($media->file_path);
         }
 
         $media->delete();
+        $this->clearFolderCache();
 
         return response()->json([
             'success' => true,
-            'message' => 'Đã xóa tệp vĩnh viễn.'
+            'message' => 'Đã xóa tệp vĩnh viễn.',
         ]);
     }
 
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids', []);
-        Log::info("Bulk Delete Request for IDs: " . implode(', ', $ids));
-        
         $items = Media::whereIn('id', $ids)->get();
         $deletedCount = 0;
-        
+
         foreach ($items as $item) {
-            if (Storage::disk('clients_public')->exists($item->file_path)) {
-                Storage::disk('clients_public')->delete($item->file_path);
+            $storage = Storage::disk($item->disk ?: 'clients_public');
+
+            if ($storage->exists($item->file_path)) {
+                $storage->delete($item->file_path);
             }
+
             $item->delete();
             $deletedCount++;
         }
 
-        Log::info("Bulk Delete Finished. Total items removed: " . $deletedCount);
-        return response()->json([
-            'success' => true,
-            'message' => "Đã xóa {$deletedCount} tệp."
+        Log::info('Media bulk delete finished', [
+            'ids' => $ids,
+            'deleted' => $deletedCount,
         ]);
-    }
 
-    /**
-     * API: Di chuyển Folder hàng loạt
-     */
-    public function moveFolder(Request $request)
-    {
-        $ids = $request->input('ids', []);
-        $newFolder = $request->input('folder');
-        $baseDir = $newFolder;
-
-        $medias = Media::whereIn('id', $ids)->get();
-        $movedCount = 0;
-
-        foreach ($medias as $media) {
-            $oldPath = $media->file_path;
-            $newPath = "{$baseDir}/{$media->file_name}";
-
-            if ($oldPath === $newPath) continue;
-
-            if (Storage::disk('clients_public')->exists($newPath)) {
-                Storage::disk('clients_public')->delete($newPath);
-                Media::where('folder', $newFolder)->where('file_name', $media->file_name)->delete();
-            }
-
-            if (Storage::disk('clients_public')->exists($oldPath)) {
-                Storage::disk('clients_public')->move($oldPath, $newPath);
-                
-                $media->update([
-                    'folder'    => $newFolder,
-                    'file_path' => $newPath,
-                    'file_url'  => Storage::disk('clients_public')->url($newPath)
-                ]);
-                $movedCount++;
-            }
+        if ($deletedCount > 0) {
+            $this->clearFolderCache();
         }
 
         return response()->json([
             'success' => true,
-            'message' => "Đã di chuyển vật lý {$movedCount} tệp vào thư mục {$newFolder}."
+            'message' => "Đã xóa {$deletedCount} tệp.",
         ]);
     }
 
-    /**
-     * API: Lấy danh sách Folder duy nhất
-     */
+    public function moveFolder(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        $newFolder = trim((string) $request->input('folder'), '/');
+        $medias = Media::whereIn('id', $ids)->get();
+        $movedCount = 0;
+
+        foreach ($medias as $media) {
+            $disk = $media->disk ?: 'clients_public';
+            $storage = Storage::disk($disk);
+            $oldPath = $media->file_path;
+            $newPath = $newFolder === '' ? $media->file_name : "{$newFolder}/{$media->file_name}";
+
+            if ($oldPath === $newPath) {
+                continue;
+            }
+
+            $duplicate = Media::query()
+                ->where('disk', $disk)
+                ->where('folder', $newFolder)
+                ->where('file_name', $media->file_name)
+                ->where('id', '!=', $media->id)
+                ->first();
+
+            if ($duplicate && $storage->exists($duplicate->file_path)) {
+                $storage->delete($duplicate->file_path);
+                $duplicate->delete();
+            }
+
+            if ($storage->exists($newPath)) {
+                $storage->delete($newPath);
+            }
+
+            if ($storage->exists($oldPath)) {
+                $storage->move($oldPath, $newPath);
+
+                $media->update([
+                    'folder' => $newFolder,
+                    'file_path' => $newPath,
+                    'file_url' => $storage->url($newPath),
+                ]);
+
+                $movedCount++;
+            }
+        }
+
+        if ($movedCount > 0) {
+            $this->clearFolderCache();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Đã di chuyển {$movedCount} tệp vào thư mục {$newFolder}.",
+        ]);
+    }
+
     public function listFolders()
     {
-        $folders = Media::distinct()->pluck('folder')->filter()->values();
+        $folders = Cache::remember(self::FOLDERS_CACHE_KEY, now()->addMinutes(30), function () {
+            $rawFolders = Media::query()
+                ->whereNotNull('folder')
+                ->where('folder', '!=', '')
+                ->orderBy('folder')
+                ->distinct()
+                ->pluck('folder')
+                ->values()
+                ->all();
+
+            $expandedFolders = [];
+
+            foreach ($rawFolders as $folder) {
+                $expandedFolders[] = $folder;
+
+                $parts = explode('/', $folder);
+                array_pop($parts);
+
+                while (! empty($parts)) {
+                    $expandedFolders[] = implode('/', $parts);
+                    array_pop($parts);
+                }
+            }
+
+            $expandedFolders = array_values(array_unique($expandedFolders));
+            sort($expandedFolders, SORT_NATURAL | SORT_FLAG_CASE);
+
+            return $expandedFolders;
+        });
+
         return response()->json($folders);
     }
 
-    private function guessImageType($file)
+    private function clearFolderCache(): void
     {
-        $mime = $file->getMimeType();
-        $extension = strtolower($file->getClientOriginalExtension());
-
-        if (str_contains($mime, 'image') || in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'avif', 'svg', 'ico', 'gif'])) return 'image';
-        if (str_contains($mime, 'video') || in_array($extension, ['mp4', 'mov', 'avi'])) return 'video';
-        if (str_contains($mime, 'audio') || in_array($extension, ['mp3', 'wav'])) return 'audio';
-        return 'other';
+        Cache::forget(self::FOLDERS_CACHE_KEY);
     }
 }

@@ -15,15 +15,23 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $data = Cache::remember('services_index', now()->addHours(12), function () {
+        $data = Cache::remember('services_index_safe', now()->addHours(12), function () {
             return [
-                'services' => Service::active()->with(['category', 'featuredImage'])->get(),
-                'categories' => ServiceCategory::active()->get(),
+                'services' => Service::active()->with(['category', 'featuredImage'])->get()->toArray(),
+                'categories' => ServiceCategory::active()->get()->toArray(),
             ];
         });
 
-        $services = $data['services'];
-        $categories = $data['categories'];
+        $services = collect($data['services'])->map(function($item) {
+            $obj = (object) $item;
+            if (isset($obj->category)) $obj->category = (object) $obj->category;
+            if (isset($obj->featured_image)) $obj->featuredImage = (object) $obj->featured_image;
+            return $obj;
+        });
+
+        $categories = collect($data['categories'])->map(function($item) {
+            return (object) $item;
+        });
 
         SEOTools::setTitle('Dịch vụ Trang điểm Chuyên nghiệp - Khánh Beauty');
         SEOTools::setDescription('Khám phá trọn bộ dịch vụ làm đẹp tại nhà của Khánh Beauty: Trang điểm cô dâu, dự tiệc, sự kiện, khóa học makeup cá nhân với chất lượng hàng đầu.');

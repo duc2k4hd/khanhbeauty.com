@@ -34,6 +34,11 @@
                         {{ session('error') }}
                     </div>
                 @endif
+                @if ($errors->any())
+                    <div class="kb-alert kb-alert--danger">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
 
                 @yield('content')
             </div>

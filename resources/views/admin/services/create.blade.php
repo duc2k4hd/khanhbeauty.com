@@ -133,6 +133,7 @@
                     <div class="kb-form-group span-2">
                         <label>Ảnh đại diện chính <span style="color:red">*</span></label>
                         <input type="file" name="featured_image" class="kb-form-control kb-form-file" accept="image/*" id="imgPreviewInput">
+                        @error('featured_image')<div style="color:red;font-size:12px;margin-top:4px">{{ $message }}</div>@enderror
                         <div id="imgPreview" style="margin-top:10px;display:none">
                             <img id="imgPreviewEl" src="" style="max-width:220px;border-radius:10px;">
                         </div>
@@ -141,6 +142,18 @@
                     <div class="kb-form-group span-2">
                         <label>Bộ ảnh Gallery (nhiều ảnh)</label>
                         <input type="file" name="gallery_files[]" class="kb-form-control kb-form-file" accept="image/*" multiple id="galleryInput">
+                        @php
+                            $galleryError = null;
+                            foreach ($errors->getMessages() as $key => $messages) {
+                                if ($key === 'gallery_files' || str_starts_with($key, 'gallery_files.')) {
+                                    $galleryError = $messages[0] ?? null;
+                                    break;
+                                }
+                            }
+                        @endphp
+                        @if($galleryError)
+                            <div style="color:red;font-size:12px;margin-top:4px">{{ $galleryError }}</div>
+                        @endif
                         <div class="hint">Có thể chọn nhiều ảnh cùng lúc. Ảnh gallery hiển thị trên trang chi tiết dịch vụ.</div>
                         <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"></div>
                     </div>

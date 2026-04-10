@@ -32,8 +32,7 @@ class PortfolioForm
                         // ── Ảnh Before → lưu before_image_id ──────
                         FileUpload::make('before_image_id')
                             ->label('Ảnh trước (Before)')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                             ->disk('public')
                             ->directory('portfolios/before')
                             ->saveUploadedFileUsing(function ($file) {
@@ -43,8 +42,7 @@ class PortfolioForm
                         // ── Ảnh After → lưu after_image_id ─────────
                         FileUpload::make('after_image_id')
                             ->label('Ảnh sau (After)')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                             ->disk('public')
                             ->directory('portfolios/after')
                             ->saveUploadedFileUsing(function ($file) {
@@ -55,8 +53,7 @@ class PortfolioForm
                         // ── Gallery → lưu gallery_ids ───────────────
                         FileUpload::make('gallery_ids')
                             ->label('Bộ sưu tập ảnh khác')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                             ->multiple()
                             ->disk('public')
                             ->directory('portfolios/gallery')

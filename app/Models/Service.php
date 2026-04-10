@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 #[Fillable([
     'category_id',
@@ -39,17 +40,52 @@ class Service extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected ?string $cacheOriginalSlug = null;
+
+    protected ?int $cacheOriginalCategoryId = null;
+
     protected static function booted()
     {
-        $clearCache = function ($service) {
-            \Illuminate\Support\Facades\Cache::forget('service_page_' . $service->slug);
-            \Illuminate\Support\Facades\Cache::forget('services_index');
-            \Illuminate\Support\Facades\Cache::forget('home_data');
+        $rememberOriginalState = function (self $service): void {
+            $service->cacheOriginalSlug = $service->getOriginal('slug') ?: $service->slug;
+            $service->cacheOriginalCategoryId = $service->getOriginal('category_id') ?: $service->category_id;
         };
 
-        static::saved($clearCache);
-        static::deleted($clearCache);
-        static::restored($clearCache);
+        static::updating($rememberOriginalState);
+        static::deleting($rememberOriginalState);
+        static::saved(fn (self $service) => $service->flushRelevantCaches());
+        static::deleted(fn (self $service) => $service->flushRelevantCaches());
+        static::restored(fn (self $service) => $service->flushRelevantCaches());
+    }
+
+    public function flushRelevantCaches(): void
+    {
+        $slugs = array_filter(array_unique([
+            $this->cacheOriginalSlug,
+            $this->slug,
+        ]));
+
+        foreach ($slugs as $slug) {
+            Cache::forget('service_v7_safe_' . $slug);
+            Cache::forget('service_page_' . $slug);
+        }
+
+        $categoryIds = array_filter(array_unique([
+            $this->cacheOriginalCategoryId,
+            $this->category_id,
+        ]));
+
+        foreach ($categoryIds as $categoryId) {
+            Cache::forget('related_v7_' . $categoryId);
+        }
+
+        Cache::forget('services_index');
+        Cache::forget('services_index_safe');
+        Cache::forget('home_v8_safe');
+        Cache::forget('home_data');
+
+        $this->cacheOriginalSlug = $this->slug;
+        $this->cacheOriginalCategoryId = $this->category_id;
     }
 
     protected function casts(): array

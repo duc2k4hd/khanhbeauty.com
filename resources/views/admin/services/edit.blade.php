@@ -35,6 +35,7 @@
 .gallery-thumb { width:80px; height:80px; object-fit:cover; border-radius:8px; border:2px solid #eee; position:relative; }
 .gallery-grid { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
 .gallery-item { position:relative; }
+.gallery-item.is-removed { display:none; }
 .gallery-item .del-btn {
     position:absolute; top:-6px; right:-6px;
     width:20px; height:20px; border-radius:50%;
@@ -159,6 +160,7 @@
                         </div>
                         @endif
                         <input type="file" name="featured_image" class="kb-form-control kb-form-file" accept="image/*">
+                        @error('featured_image')<div style="color:red;font-size:12px;margin-top:4px">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="kb-form-group span-2">
@@ -182,6 +184,18 @@
                         </div>
                         @endif
                         <input type="file" name="gallery_files[]" class="kb-form-control kb-form-file" accept="image/*" multiple id="galleryInput">
+                        @php
+                            $galleryError = null;
+                            foreach ($errors->getMessages() as $key => $messages) {
+                                if ($key === 'gallery_files' || str_starts_with($key, 'gallery_files.')) {
+                                    $galleryError = $messages[0] ?? null;
+                                    break;
+                                }
+                            }
+                        @endphp
+                        @if($galleryError)
+                            <div style="color:red;font-size:12px;margin-top:4px">{{ $galleryError }}</div>
+                        @endif
                         <div class="hint">Chọn nhiều ảnh để thêm vào gallery hiện có</div>
                         <div id="galleryPreview" class="gallery-grid"></div>
                     </div>
@@ -438,11 +452,14 @@ if (galleryInput) {
 }
 
 // Gallery remove checkbox toggle visual
-document.querySelectorAll('input[name="gallery_remove[]"]').forEach(cb => {
+document.querySelectorAll('input[name="gallery_remove_ids[]"]').forEach(cb => {
     cb.addEventListener('change', function() {
         const item = this.closest('.gallery-item');
-        item.style.opacity = this.checked ? '0.3' : '1';
-        item.querySelector('span').textContent = this.checked ? '✓' : '✕';
+        if (!item) {
+            return;
+        }
+
+        item.classList.toggle('is-removed', this.checked);
     });
 });
 

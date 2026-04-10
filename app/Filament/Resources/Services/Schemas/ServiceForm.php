@@ -46,8 +46,7 @@ class ServiceForm
                 // ── Ảnh đại diện → lưu featured_image_id ──────
                 FileUpload::make('featured_image_id')
                     ->label('Ảnh đại diện')
-                    ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                    ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                     ->disk('public')
                     ->directory('services')
                     ->saveUploadedFileUsing(function ($file) {
@@ -58,8 +57,7 @@ class ServiceForm
                 // ── Gallery → lưu gallery_ids (mảng IDs) ───────
                 FileUpload::make('gallery_ids')
                     ->label('Gallery ảnh')
-                    ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                    ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                     ->multiple()
                     ->disk('public')
                     ->directory('services/gallery')

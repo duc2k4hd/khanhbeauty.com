@@ -24,6 +24,7 @@ Route::get('/dich-vu/{slug}', [App\Http\Controllers\ServiceController::class, 's
  * ========================================================= */
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\HomepageController as AdminHomepageController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
@@ -39,6 +40,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['web', 'admin'])->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
         
+        // Homepage Management
+        Route::get('/homepage', [AdminHomepageController::class, 'index'])->name('homepage.index');
+        Route::post('/homepage', [AdminHomepageController::class, 'update'])->name('homepage.update');
+
         // System Settings
         Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');

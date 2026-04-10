@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Rules\AcceptedImageUpload;
 use App\Services\MediaUploadService;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\ServiceVariant;
 use App\Models\Faq;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ServiceController extends Controller
@@ -32,53 +36,68 @@ class ServiceController extends Controller
             'price'       => 'required|numeric|min:0',
             'category_id' => 'required|exists:service_categories,id',
             'video_url'   => 'nullable|url',
+            'featured_image' => ['nullable', 'file', new AcceptedImageUpload(), 'max:5120'],
+            'gallery_files' => ['nullable', 'array'],
+            'gallery_files.*' => ['nullable', 'file', new AcceptedImageUpload(), 'max:5120'],
         ]);
 
-        $data = $request->only([
-            'category_id', 'name', 'short_description', 'description',
-            'price', 'sale_price', 'price_unit', 'duration_minutes', 'sort_order',
-            'meta_title', 'meta_description', 'meta_keywords', 'video_url',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        // Slug unique
-        $data['slug'] = $request->slug ?: Str::slug($request->name);
-        if (Service::where('slug', $data['slug'])->exists()) {
-            $data['slug'] .= '-' . time();
+            $data = $request->only([
+                'category_id', 'name', 'short_description', 'description',
+                'price', 'sale_price', 'price_unit', 'duration_minutes', 'sort_order',
+                'meta_title', 'meta_description', 'meta_keywords', 'video_url',
+            ]);
+
+            $data['slug'] = $request->slug ?: Str::slug($request->name);
+            if (Service::where('slug', $data['slug'])->exists()) {
+                $data['slug'] .= '-' . time();
+            }
+
+            $data['is_featured'] = $request->boolean('is_featured');
+            $data['is_active']   = $request->boolean('is_active', true);
+
+            $data['benefits']      = $this->filterRepeater($request->input('benefits', []));
+            $data['process_steps'] = $this->filterRepeater($request->input('process_steps', []));
+            $data['includes']      = array_values(array_filter((array) $request->input('includes', []), fn($v) => trim($v) !== ''));
+
+            if ($request->hasFile('featured_image')) {
+                $data['featured_image_id'] = MediaUploadService::upload(
+                    $request->file('featured_image'),
+                    'service_featured'
+                );
+            }
+
+            if ($request->hasFile('gallery_files')) {
+                $data['gallery_ids'] = MediaUploadService::uploadMultiple(
+                    $request->file('gallery_files'),
+                    'service_gallery'
+                );
+            }
+
+            $service = Service::create($data);
+
+            $this->syncVariants($service, $request->input('variants', []));
+            $this->syncFaqs($service->id, $request->input('faqs', []), [], []);
+            $this->clearServiceCaches($service);
+
+            DB::commit();
+
+            return redirect()->route('admin.services.index')->with('success', 'Da tao dich vu thanh cong.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Service create failed', [
+                'message' => $e->getMessage(),
+                'user_id' => optional($request->user())->id,
+                'name' => $request->input('name'),
+            ]);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Khong the tao dich vu. Vui long kiem tra du lieu va thu lai.');
         }
-
-        $data['is_featured'] = $request->boolean('is_featured');
-        $data['is_active']   = $request->boolean('is_active', true);
-
-        // JSON fields
-        $data['benefits']      = $this->filterRepeater($request->input('benefits', []));
-        $data['process_steps'] = $this->filterRepeater($request->input('process_steps', []));
-        $data['includes']      = array_values(array_filter((array) $request->input('includes', []), fn($v) => trim($v) !== ''));
-
-        // ── Ảnh đại diện → lưu media_id ─────────────────────
-        if ($request->hasFile('featured_image')) {
-            $data['featured_image_id'] = MediaUploadService::upload(
-                $request->file('featured_image'),
-                'service_featured'
-            );
-        }
-
-        // ── Gallery → lưu mảng media IDs ────────────────────
-        if ($request->hasFile('gallery_files')) {
-            $data['gallery_ids'] = MediaUploadService::uploadMultiple(
-                $request->file('gallery_files'),
-                'service_gallery'
-            );
-        }
-
-        $service = Service::create($data);
-
-        // Service Variants
-        $this->syncVariants($service, $request->input('variants', []));
-
-        // FAQs
-        $this->syncFaqs($service->id, $request->input('faqs', []), [], []);
-
-        return redirect()->route('admin.services.index')->with('success', 'Đã tạo dịch vụ thành công!');
     }
 
     public function edit(Service $service)
@@ -90,74 +109,99 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service)
     {
+        $oldSlug = $service->slug;
+        $oldCategoryId = $service->category_id;
+
         $request->validate([
             'name'        => 'required|string|max:255',
             'price'       => 'required|numeric|min:0',
             'category_id' => 'required|exists:service_categories,id',
             'video_url'   => 'nullable|url',
+            'featured_image' => ['nullable', 'file', new AcceptedImageUpload(), 'max:5120'],
+            'gallery_files' => ['nullable', 'array'],
+            'gallery_files.*' => ['nullable', 'file', new AcceptedImageUpload(), 'max:5120'],
         ]);
 
-        $data = $request->only([
-            'category_id', 'name', 'slug', 'short_description', 'description',
-            'price', 'sale_price', 'price_unit', 'duration_minutes', 'sort_order',
-            'meta_title', 'meta_description', 'meta_keywords', 'video_url',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $data['is_featured'] = $request->boolean('is_featured');
-        $data['is_active']   = $request->boolean('is_active');
+            $data = $request->only([
+                'category_id', 'name', 'slug', 'short_description', 'description',
+                'price', 'sale_price', 'price_unit', 'duration_minutes', 'sort_order',
+                'meta_title', 'meta_description', 'meta_keywords', 'video_url',
+            ]);
 
-        // JSON fields
-        $data['benefits']      = $this->filterRepeater($request->input('benefits', []));
-        $data['process_steps'] = $this->filterRepeater($request->input('process_steps', []));
-        $data['includes']      = array_values(array_filter((array) $request->input('includes', []), fn($v) => trim($v) !== ''));
+            $data['is_featured'] = $request->boolean('is_featured');
+            $data['is_active']   = $request->boolean('is_active');
 
-        // ── Ảnh đại diện → lưu media_id ─────────────────────
-        if ($request->hasFile('featured_image')) {
-            $data['featured_image_id'] = MediaUploadService::upload(
-                $request->file('featured_image'),
-                'service_featured'
-            );
+            $data['benefits']      = $this->filterRepeater($request->input('benefits', []));
+            $data['process_steps'] = $this->filterRepeater($request->input('process_steps', []));
+            $data['includes']      = array_values(array_filter((array) $request->input('includes', []), fn($v) => trim($v) !== ''));
+
+            if ($request->hasFile('featured_image')) {
+                $data['featured_image_id'] = MediaUploadService::upload(
+                    $request->file('featured_image'),
+                    'service_featured'
+                );
+            }
+
+            $currentGalleryIds = $service->gallery_ids ?? [];
+            $removeIds = array_map('intval', (array) $request->input('gallery_remove_ids', []));
+            $currentGalleryIds = array_values(array_filter($currentGalleryIds, fn($id) => !in_array($id, $removeIds, true)));
+
+            if ($request->hasFile('gallery_files')) {
+                $newIds = MediaUploadService::uploadMultiple(
+                    $request->file('gallery_files'),
+                    'service_gallery'
+                );
+                $currentGalleryIds = array_merge($currentGalleryIds, $newIds);
+            }
+            $data['gallery_ids'] = $currentGalleryIds;
+
+            $service->update($data);
+
+            $deleteVariantIds = array_filter((array) $request->input('delete_variants', []));
+            if (!empty($deleteVariantIds)) {
+                ServiceVariant::where('service_id', $service->id)->whereIn('id', $deleteVariantIds)->delete();
+            }
+            $this->syncVariants($service, $request->input('variants', []));
+
+            $deleteFaqIds = array_filter((array) $request->input('delete_faqs', []));
+            $this->syncFaqs($service->id, $request->input('faqs', []), $deleteFaqIds, []);
+            $this->clearServiceCaches($service, $oldSlug, $oldCategoryId);
+
+            DB::commit();
+
+            return redirect()->route('admin.services.index')->with('success', 'Da cap nhat dich vu thanh cong.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Service update failed', [
+                'message' => $e->getMessage(),
+                'user_id' => optional($request->user())->id,
+                'service_id' => $service->id,
+            ]);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Khong the cap nhat dich vu. Vui long kiem tra du lieu va thu lai.');
         }
-
-        // ── Gallery: gỡ bỏ IDs cũ + thêm IDs mới ────────────
-        $currentGalleryIds = $service->gallery_ids ?? [];
-        $removeIds = array_map('intval', (array) $request->input('gallery_remove_ids', []));
-        $currentGalleryIds = array_values(array_filter($currentGalleryIds, fn($id) => !in_array($id, $removeIds)));
-
-        if ($request->hasFile('gallery_files')) {
-            $newIds = MediaUploadService::uploadMultiple(
-                $request->file('gallery_files'),
-                'service_gallery'
-            );
-            $currentGalleryIds = array_merge($currentGalleryIds, $newIds);
-        }
-        $data['gallery_ids'] = $currentGalleryIds;
-
-        $service->update($data);
-
-        // Variants
-        $deleteVariantIds = array_filter((array) $request->input('delete_variants', []));
-        if (!empty($deleteVariantIds)) {
-            ServiceVariant::where('service_id', $service->id)->whereIn('id', $deleteVariantIds)->delete();
-        }
-        $this->syncVariants($service, $request->input('variants', []));
-
-        // FAQs
-        $deleteFaqIds = array_filter((array) $request->input('delete_faqs', []));
-        $this->syncFaqs($service->id, $request->input('faqs', []), $deleteFaqIds, []);
-
-        return redirect()->route('admin.services.index')->with('success', 'Đã cập nhật dịch vụ thành công!');
     }
 
     public function destroy(Service $service)
     {
+        $oldSlug = $service->slug;
+        $oldCategoryId = $service->category_id;
+
         $service->delete();
+        $this->clearServiceCaches($service, $oldSlug, $oldCategoryId);
         return redirect()->route('admin.services.index')->with('success', 'Đã xóa dịch vụ!');
     }
 
     public function toggleStatus(Service $service)
     {
         $service->update(['is_active' => !$service->is_active]);
+        $this->clearServiceCaches($service);
         return response()->json([
             'success'   => true,
             'is_active' => $service->is_active,
@@ -208,5 +252,23 @@ class ServiceController extends Controller
                 'sort_order'         => 0,
             ]);
         }
+    }
+
+    private function clearServiceCaches(Service $service, ?string $oldSlug = null, ?int $oldCategoryId = null): void
+    {
+        $slugs = array_filter(array_unique([$oldSlug, $service->slug]));
+        foreach ($slugs as $slug) {
+            Cache::forget('service_v7_safe_' . $slug);
+            Cache::forget('service_page_' . $slug);
+        }
+
+        $categoryIds = array_filter(array_unique([$oldCategoryId, $service->category_id]));
+        foreach ($categoryIds as $categoryId) {
+            Cache::forget('related_v7_' . $categoryId);
+        }
+
+        Cache::forget('services_index');
+        Cache::forget('home_v8_safe');
+        Cache::forget('home_data');
     }
 }

@@ -27,8 +27,7 @@ class ProductCategoryForm
                 // ── Ảnh danh mục → lưu image_id ────────────────
                 FileUpload::make('image_id')
                     ->label('Ảnh đại diện danh mục')
-                    ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                    ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                     ->disk('public')
                     ->directory('categories/products')
                     ->saveUploadedFileUsing(function ($file) {

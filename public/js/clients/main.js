@@ -13,20 +13,53 @@
   let lastScrollY = 0;
   let isScrollingUp = false;
   
-  if (nav || floatingCta || scrollTopBtn) {
+  const progressBar = document.getElementById('readingProgressBar');
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.khanhbeauty-nav__menu a');
+
+  if (nav || floatingCta || scrollTopBtn || progressBar || sections.length > 0) {
     window.addEventListener('scroll', () => {
       const currentY = window.scrollY;
       isScrollingUp = currentY < lastScrollY;
 
       // Nav effect
       if (nav) nav.classList.toggle('scrolled', currentY > 80);
+      
       // Floating CTA
       if (floatingCta) floatingCta.classList.toggle('show', currentY > 600);
 
-      // Scroll to Top: hiện khi cuộn LÊN + qua vùng 300px
+      // Scroll to Top
       if (scrollTopBtn) {
         const shouldShow = isScrollingUp && currentY > 300;
         scrollTopBtn.classList.toggle('visible', shouldShow);
+      }
+
+      // Reading Progress Bar
+      if (progressBar) {
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = docHeight > 0 ? (currentY / docHeight) * 100 : 0;
+        progressBar.style.width = scrolled + '%';
+      }
+
+      // Scroll Spy
+      if (sections.length > 0 && navLinks.length > 0) {
+        let currentSectionId = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          if (currentY >= (sectionTop - 200)) {
+            currentSectionId = section.getAttribute('id');
+          }
+        });
+
+        if (currentY < 100) currentSectionId = 'hero'; // Fallback for very top
+
+        navLinks.forEach(a => {
+          a.classList.remove('active');
+          const href = a.getAttribute('href');
+          if (href && currentSectionId !== '' && href.endsWith('#' + currentSectionId)) {
+            a.classList.add('active');
+          }
+        });
       }
 
       lastScrollY = currentY;

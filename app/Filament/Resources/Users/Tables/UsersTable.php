@@ -26,7 +26,8 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
-                TextColumn::make('avatar_url')
+                TextColumn::make('avatar.file_url')
+                    ->label('Avatar URL')
                     ->searchable(),
                 TextColumn::make('role')
                     ->badge(),

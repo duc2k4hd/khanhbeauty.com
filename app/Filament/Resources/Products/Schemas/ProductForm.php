@@ -66,8 +66,7 @@ class ProductForm
                         // ── Ảnh đại diện → lưu featured_image_id ──
                         FileUpload::make('featured_image_id')
                             ->label('Ảnh đại diện sản phẩm')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                             ->disk('public')
                             ->directory('products')
                             ->saveUploadedFileUsing(function ($file) {
@@ -78,8 +77,7 @@ class ProductForm
                         // ── Gallery → lưu gallery_ids ──────────────
                         FileUpload::make('gallery_ids')
                             ->label('Gallery ảnh sản phẩm')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
                             ->multiple()
                             ->disk('public')
                             ->directory('products/gallery')

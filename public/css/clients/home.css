@@ -10,10 +10,11 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(rgba(255,245,247,0.85), rgba(255,245,247,0.7)), url('/images/clients/hero.png');
+  background: linear-gradient(rgba(255, 245, 247, 0.85), rgba(255, 245, 247, 0.7)), url('/images/clients/hero.png');
   background-size: cover;
   background-position: center;
 }
+
 .khanhbeauty-hero__decor-circle {
   position: absolute;
   border-radius: 50%;
@@ -21,14 +22,46 @@
   opacity: 0.5;
   animation: floatSoft 8s ease-in-out infinite;
 }
-.khanhbeauty-hero__decor-circle:nth-child(1) { width: 400px; height: 400px; top: -100px; right: -100px; border-width: 2px; }
-.khanhbeauty-hero__decor-circle:nth-child(2) { width: 250px; height: 250px; bottom: 10%; left: 5%; animation-delay: -3s; border-color: var(--rose-gold-light); }
-.khanhbeauty-hero__decor-circle:nth-child(3) { width: 150px; height: 150px; top: 30%; left: 15%; animation-delay: -5s; }
+
+.khanhbeauty-hero__decor-circle:nth-child(1) {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -100px;
+  border-width: 2px;
+}
+
+.khanhbeauty-hero__decor-circle:nth-child(2) {
+  width: 250px;
+  height: 250px;
+  bottom: 10%;
+  left: 5%;
+  animation-delay: -3s;
+  border-color: var(--rose-gold-light);
+}
+
+.khanhbeauty-hero__decor-circle:nth-child(3) {
+  width: 150px;
+  height: 150px;
+  top: 30%;
+  left: 15%;
+  animation-delay: -5s;
+}
 
 @keyframes floatSoft {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(10px, -15px) rotate(2deg); }
-  66% { transform: translate(-8px, 10px) rotate(-1deg); }
+
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  33% {
+    transform: translate(10px, -15px) rotate(2deg);
+  }
+
+  66% {
+    transform: translate(-8px, 10px) rotate(-1deg);
+  }
 }
 
 .khanhbeauty-hero__brush {
@@ -40,7 +73,14 @@
   height: 200px;
   opacity: 0.06;
 }
-.khanhbeauty-hero__content { position: relative; z-index: 2; text-align: center; padding: 0 20px; }
+
+.khanhbeauty-hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+}
+
 .khanhbeauty-hero__badge {
   display: inline-block;
   font-family: var(--font-body);
@@ -56,6 +96,7 @@
   opacity: 0;
   animation: fadeSlideUp 1s 0.3s forwards;
 }
+
 .khanhbeauty-hero__title {
   font-family: var(--font-display);
   font-size: clamp(52px, 8vw, 110px);
@@ -66,7 +107,13 @@
   opacity: 0;
   animation: fadeSlideUp 1s 0.5s forwards;
 }
-.khanhbeauty-hero__title em { font-style: italic; color: var(--pink-500); position: relative; }
+
+.khanhbeauty-hero__title em {
+  font-style: italic;
+  color: var(--pink-500);
+  position: relative;
+}
+
 .khanhbeauty-hero__title em::after {
   content: '';
   position: absolute;
@@ -79,6 +126,7 @@
   z-index: -1;
   border-radius: 4px;
 }
+
 .khanhbeauty-hero__subtitle {
   font-family: var(--font-elegant);
   font-size: clamp(18px, 2.5vw, 28px);
@@ -90,6 +138,7 @@
   opacity: 0;
   animation: fadeSlideUp 1s 0.7s forwards;
 }
+
 .khanhbeauty-hero__cta-group {
   display: flex;
   gap: 16px;
@@ -98,6 +147,7 @@
   opacity: 0;
   animation: fadeSlideUp 1s 0.9s forwards;
 }
+
 .khanhbeauty-hero__cta {
   padding: 16px 40px;
   border-radius: 50px;
@@ -109,14 +159,29 @@
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   border: none;
 }
+
 .khanhbeauty-hero__cta--primary {
   background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
   color: white;
   box-shadow: 0 8px 30px rgba(237, 100, 166, 0.3);
 }
-.khanhbeauty-hero__cta--primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(237, 100, 166, 0.45); }
-.khanhbeauty-hero__cta--secondary { background: transparent; border: 1.5px solid var(--rose-gold-light); color: var(--rose-gold); }
-.khanhbeauty-hero__cta--secondary:hover { background: var(--rose-gold); color: white; border-color: var(--rose-gold); }
+
+.khanhbeauty-hero__cta--primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(237, 100, 166, 0.45);
+}
+
+.khanhbeauty-hero__cta--secondary {
+  background: transparent;
+  border: 1.5px solid var(--rose-gold-light);
+  color: var(--rose-gold);
+}
+
+.khanhbeauty-hero__cta--secondary:hover {
+  background: var(--rose-gold);
+  color: white;
+  border-color: var(--rose-gold);
+}
 
 .khanhbeauty-hero__scroll {
   position: absolute;
@@ -130,236 +195,1137 @@
   opacity: 0;
   animation: fadeSlideUp 1s 1.2s forwards;
 }
-.khanhbeauty-hero__scroll span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-light); }
-.khanhbeauty-hero__scroll-line { width: 1px; height: 40px; background: var(--pink-300); position: relative; overflow: hidden; }
+
+.khanhbeauty-hero__scroll span {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.khanhbeauty-hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: var(--pink-300);
+  position: relative;
+  overflow: hidden;
+}
+
 .khanhbeauty-hero__scroll-line::after {
   content: '';
-  position: absolute; bottom: -100%; left: 0; width: 100%; height: 100%;
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: var(--pink-500);
   animation: scrollLine 2s ease-in-out infinite;
 }
 
 .khanhbeauty-service-card.reveal.visible {
-    line-height: 1.7;
+  line-height: 1.7;
 }
 
-@keyframes scrollLine { 0% { top: -100%; } 50% { top: 100%; } 100% { top: 100%; } }
-@keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scrollLine {
+  0% {
+    top: -100%;
+  }
+
+  50% {
+    top: 100%;
+  }
+
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* ─── SECTION 2: ABOUT ─── */
-.khanhbeauty-about { padding: var(--section-padding) 5%; position: relative; background: var(--white); overflow: hidden; }
-.khanhbeauty-about__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1200px; margin: 0 auto; }
-.khanhbeauty-about__image-wrap { position: relative; width: 380px; height: 380px; margin: 0 auto; }
+.khanhbeauty-about {
+  padding: var(--section-padding) 5%;
+  position: relative;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.khanhbeauty-about__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.khanhbeauty-about__image-wrap {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  margin: 0 auto;
+}
+
 .khanhbeauty-about__image-diamond {
-  width: 100%; height: 100%; position: relative; overflow: hidden; z-index: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.khanhbeauty-about__image-diamond img { width: 100%; height: 100%; object-fit: cover; }
+
+.khanhbeauty-about__image-diamond img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .khanhbeauty-about__image-frame {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  transform: scale(1.1) rotate(45deg); border: 1px solid var(--pink-200); pointer-events: none; z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.1) rotate(45deg);
+  border: 1px solid var(--pink-200);
+  pointer-events: none;
+  z-index: 0;
 }
+
 .khanhbeauty-about__exp-badge {
-  position: absolute; bottom: 20px; right: -20px; background: white; padding: 16px 24px;
-  border-radius: 16px; box-shadow: 0 10px 40px rgba(183, 110, 121, 0.12); text-align: center; z-index: 2;
+  position: absolute;
+  bottom: 20px;
+  right: -20px;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(183, 110, 121, 0.12);
+  text-align: center;
+  z-index: 2;
 }
-.khanhbeauty-about__exp-badge strong { display: block; font-family: var(--font-display); font-size: 32px; color: var(--pink-500); line-height: 1; }
-.khanhbeauty-about__text .section-label { font-size: 11px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--rose-gold); margin-bottom: 16px; display: block; }
-.khanhbeauty-about__text h2 { font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 42px); font-weight: 600; line-height: 1.3; margin-bottom: 24px; color: var(--text-dark); }
-.khanhbeauty-about__text h2 em { color: var(--pink-500); font-style: italic; }
-.khanhbeauty-about__text p { font-size: 15px; line-height: 1.9; color: var(--text-medium); margin-bottom: 20px; }
-.khanhbeauty-about__stats { display: flex; gap: 40px; margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--pink-200); }
-.khanhbeauty-about__stat-num { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--pink-500); line-height: 1; }
+
+.khanhbeauty-about__exp-badge strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--pink-500);
+  line-height: 1;
+}
+
+.khanhbeauty-about__text .section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.khanhbeauty-about__text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 24px;
+  color: var(--text-dark);
+}
+
+.khanhbeauty-about__text h2 em {
+  color: var(--pink-500);
+  font-style: italic;
+}
+
+.khanhbeauty-about__text p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-medium);
+  margin-bottom: 20px;
+}
+
+.khanhbeauty-about__stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--pink-200);
+}
+
+.khanhbeauty-about__stat-num {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--pink-500);
+  line-height: 1;
+}
 
 /* ─── SECTION 3: SERVICES ─── */
-.khanhbeauty-services { padding: var(--section-padding) 5%; background: linear-gradient(180deg, var(--pink-100) 0%, var(--cream) 100%); position: relative; }
-.khanhbeauty-services__header { text-align: center; max-width: 600px; margin: 0 auto 60px; }
-.section-label { font-size: 11px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--rose-gold); margin-bottom: 16px; display: block; }
-.khanhbeauty-services__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto; }
+.khanhbeauty-services {
+  padding: var(--section-padding) 5%;
+  background: linear-gradient(180deg, var(--pink-100) 0%, var(--cream) 100%);
+  position: relative;
+}
+
+.khanhbeauty-services__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.khanhbeauty-services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .khanhbeauty-service-card {
-  background: var(--white); border-radius: 24px; padding: 40px 30px; text-align: center; position: relative; overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); border: 1px solid rgba(251, 182, 206, 0.2);
+  background: var(--white);
+  border-radius: 24px;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid rgba(251, 182, 206, 0.2);
 }
+
 .khanhbeauty-service-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
   background: linear-gradient(90deg, var(--pink-300), var(--pink-500), var(--rose-gold));
-  transform: scaleX(0); transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: left;
 }
-.khanhbeauty-service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(183, 110, 121, 0.12); }
-.khanhbeauty-service-card:hover::before { transform: scaleX(1); }
+
+.khanhbeauty-service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(183, 110, 121, 0.12);
+}
+
+.khanhbeauty-service-card:hover::before {
+  transform: scaleX(1);
+}
+
 .khanhbeauty-service-card__icon {
   width: 100%;
   aspect-ratio: 16/10;
-  margin: -40px -30px 24px -30px; /* Offset the parent padding to make image full-width at top */
+  margin: -40px -30px 24px -30px;
+  /* Offset the parent padding to make image full-width at top */
   width: calc(100% + 60px);
   overflow: hidden;
   position: relative;
 }
+
 .khanhbeauty-service-card__icon img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 .khanhbeauty-service-card:hover .khanhbeauty-service-card__icon img {
   transform: scale(1.1);
 }
-.khanhbeauty-service-card__price { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--pink-500); }
+
+.khanhbeauty-service-card__price {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--pink-500);
+}
 
 /* ─── SECTION 4: SHOWCASE ─── */
-.khanhbeauty-showcase { padding: var(--section-padding) 0; background: var(--white); overflow: hidden; }
-.khanhbeauty-showcase__header { text-align: center; max-width: 600px; margin: 0 auto 70px; padding: 0 20px; }
-.khanhbeauty-showcase__item { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
-.khanhbeauty-showcase__item:nth-child(even) { direction: rtl; }
-.khanhbeauty-showcase__item:nth-child(even) > * { direction: ltr; }
-.khanhbeauty-showcase__image { position: relative; height: 100%; min-height: 500px; overflow: hidden; }
-.khanhbeauty-showcase__image img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
-.khanhbeauty-showcase__image-tag {
-  position: absolute; bottom: 30px; left: 30px; background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px); padding: 10px 20px; border-radius: 30px; font-size: 12px;
-  font-weight: 600; color: var(--pink-500); z-index: 2;
+.khanhbeauty-showcase {
+  padding: var(--section-padding) 0;
+  background: var(--white);
+  overflow: hidden;
 }
-.khanhbeauty-showcase__content { padding: 40px 10%; }
-.khanhbeauty-showcase__content h3 { font-family: var(--font-display); font-size: clamp(24px, 2.5vw, 36px); font-weight: 700; color: var(--text-dark); margin-bottom: 20px; line-height: 1.3; }
-.khanhbeauty-showcase__content p { font-size: 16px; line-height: 1.9; color: var(--text-medium); margin-bottom: 30px; }
-.khanhbeauty-showcase__step-num { font-family: var(--font-display); font-size: 80px; font-weight: 700; color: var(--pink-200); line-height: 1; margin-bottom: 12px; opacity: 0.6; }
-.khanhbeauty-showcase__skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-.khanhbeauty-showcase__skill-tag { background: var(--pink-100); color: var(--pink-600); padding: 8px 18px; border-radius: 30px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+
+.khanhbeauty-showcase__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 70px;
+  padding: 0 20px;
+}
+
+.khanhbeauty-showcase__item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+}
+
+.khanhbeauty-showcase__item:nth-child(even) {
+  direction: rtl;
+}
+
+.khanhbeauty-showcase__item:nth-child(even)>* {
+  direction: ltr;
+}
+
+.khanhbeauty-showcase__image {
+  position: relative;
+  height: 100%;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+.khanhbeauty-showcase__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.khanhbeauty-showcase__image-tag {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pink-500);
+  z-index: 2;
+}
+
+.khanhbeauty-showcase__content {
+  padding: 40px 10%;
+}
+
+.khanhbeauty-showcase__content h3 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.5vw, 36px);
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.khanhbeauty-showcase__content p {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--text-medium);
+  margin-bottom: 30px;
+}
+
+.khanhbeauty-showcase__step-num {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--pink-200);
+  line-height: 1;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.khanhbeauty-showcase__skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.khanhbeauty-showcase__skill-tag {
+  background: var(--pink-100);
+  color: var(--pink-600);
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
 
 /* ─── SECTION 5: BEFORE / AFTER ─── */
-.khanhbeauty-ba { padding: var(--section-padding) 5%; background: linear-gradient(180deg, var(--cream) 0%, var(--pink-100) 50%, var(--cream) 100%); }
-.khanhbeauty-ba__header { text-align: center; max-width: 600px; margin: 0 auto 60px; }
-.khanhbeauty-ba__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto; }
-.khanhbeauty-ba__slider { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 3/4; cursor: ew-resize; box-shadow: 0 10px 40px rgba(183, 110, 121, 0.12); }
-.khanhbeauty-ba__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.khanhbeauty-ba__img--after { clip-path: inset(0 50% 0 0); }
-.khanhbeauty-ba__divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: white; transform: translateX(-50%); z-index: 3; pointer-events: none; }
+.khanhbeauty-ba {
+  padding: var(--section-padding) 5%;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--pink-100) 50%, var(--cream) 100%);
+}
+
+.khanhbeauty-ba__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+
+.khanhbeauty-ba__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.khanhbeauty-ba__slider {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  cursor: ew-resize;
+  box-shadow: 0 10px 40px rgba(183, 110, 121, 0.12);
+}
+
+.khanhbeauty-ba__slider--single {
+  cursor: default;
+}
+
+.khanhbeauty-ba__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.khanhbeauty-ba__img--before {
+  z-index: 2;
+  clip-path: inset(0 50% 0 0);
+}
+
+.khanhbeauty-ba__img--after {
+  z-index: 1;
+}
+
+.khanhbeauty-ba__img--single {
+  z-index: 1;
+}
+
+.khanhbeauty-ba__empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(248, 227, 232, 0.92));
+  color: var(--text-light);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.khanhbeauty-ba__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: white;
+  transform: translateX(-50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
 .khanhbeauty-ba__divider::before {
-  content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 40px; height: 40px; border-radius: 50%; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
+
 .khanhbeauty-ba__divider::after {
-  content: '⟨  ⟩'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  font-size: 14px; color: var(--pink-500); font-weight: 700; z-index: 4;
+  content: '⟨  ⟩';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: var(--pink-500);
+  font-weight: 700;
+  z-index: 4;
 }
+
 .khanhbeauty-ba__label {
-  position: absolute; bottom: 16px; z-index: 5; background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(8px); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  position: absolute;
+  bottom: 16px;
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
 }
-.khanhbeauty-ba__label--before { left: 12px; color: var(--text-light); }
-.khanhbeauty-ba__label--after { right: 12px; color: var(--pink-500); }
-.khanhbeauty-ba__slider-caption { text-align: center; margin-top: 16px; font-family: var(--font-elegant); font-size: 16px; font-style: italic; color: var(--text-medium); }
+
+.khanhbeauty-ba__label--before {
+  left: 12px;
+  color: var(--text-light);
+}
+
+.khanhbeauty-ba__label--after {
+  right: 12px;
+  color: var(--pink-500);
+}
+
+.khanhbeauty-ba__slider-caption {
+  text-align: center;
+  margin-top: 16px;
+  font-family: var(--font-elegant);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-medium);
+}
 
 /* ─── SECTION 6: GALLERY ─── */
-.khanhbeauty-gallery { padding: var(--section-padding) 5%; background: var(--white); }
-.khanhbeauty-gallery__header { text-align: center; max-width: 600px; margin: 0 auto 50px; }
-.khanhbeauty-gallery__filters { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
-.khanhbeauty-gallery__filter { padding: 8px 24px; border-radius: 30px; border: 1px solid var(--pink-200); background: transparent; font-family: var(--font-body); font-size: 13px; color: var(--text-medium); cursor: pointer; transition: all 0.3s; }
-.khanhbeauty-gallery__filter.active, .khanhbeauty-gallery__filter:hover { background: var(--pink-500); color: white; border-color: var(--pink-500); }
-.khanhbeauty-gallery__masonry { columns: 4; column-gap: 20px; max-width: 1300px; margin: 0 auto; }
-.khanhbeauty-gallery__item { break-inside: avoid; margin-bottom: 20px; border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-.khanhbeauty-gallery__item-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(45, 45, 45, 0.7)); opacity: 0; transition: opacity 0.4s; display: flex; align-items: flex-end; padding: 20px; }
-.khanhbeauty-gallery__item:hover .khanhbeauty-gallery__item-overlay { opacity: 1; }
+.khanhbeauty-gallery {
+  padding: var(--section-padding) 5%;
+  background: var(--white);
+}
+
+.khanhbeauty-gallery__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 50px;
+}
+
+.khanhbeauty-gallery__filters {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.khanhbeauty-gallery__filter {
+  padding: 8px 24px;
+  border-radius: 30px;
+  border: 1px solid var(--pink-200);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-medium);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.khanhbeauty-gallery__filter.active,
+.khanhbeauty-gallery__filter:hover {
+  background: var(--pink-500);
+  color: white;
+  border-color: var(--pink-500);
+}
+
+.khanhbeauty-gallery__masonry {
+  columns: 4;
+  column-gap: 20px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.khanhbeauty-gallery__item {
+  break-inside: avoid;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.khanhbeauty-gallery__item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(45, 45, 45, 0.7));
+  opacity: 0;
+  transition: opacity 0.4s;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+
+.khanhbeauty-gallery__item:hover .khanhbeauty-gallery__item-overlay {
+  opacity: 1;
+}
 
 /* ─── SECTION 7: TESTIMONIALS ─── */
-.khanhbeauty-testimonials { padding: var(--section-padding) 5%; background: linear-gradient(180deg, var(--pink-100) 0%, var(--cream) 100%); position: relative; overflow: hidden; }
-.khanhbeauty-testimonials__header { text-align: center; max-width: 600px; margin: 0 auto 60px; }
-.khanhbeauty-testimonials__track { display: flex; gap: 30px; max-width: 1200px; margin: 0 auto; overflow-x: auto; padding: 20px 0 40px; scroll-snap-type: x mandatory; scrollbar-width: none; }
-.khanhbeauty-testimonials__track::-webkit-scrollbar { display: none; }
-.khanhbeauty-testimonial-card { min-width: 360px; max-width: 380px; background: var(--white); border-radius: 24px; padding: 36px; flex-shrink: 0; box-shadow: 0 4px 30px rgba(183, 110, 121, 0.06); border: 1px solid rgba(251, 182, 206, 0.2); }
-.khanhbeauty-testimonial-card__stars { color: var(--gold); margin-bottom: 16px; }
-.khanhbeauty-testimonial-card__text { font-family: var(--font-elegant); font-size: 17px; font-style: italic; line-height: 1.8; color: var(--text-medium); margin-bottom: 24px; }
-.khanhbeauty-testimonial-card__author { display: flex; align-items: center; gap: 14px; }
-.khanhbeauty-testimonial-card__avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--pink-200), var(--pink-300)); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 18px; font-weight: 700; color: white; }
+.khanhbeauty-testimonials {
+  padding: var(--section-padding) 5%;
+  background: linear-gradient(180deg, var(--pink-100) 0%, var(--cream) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.khanhbeauty-testimonials__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+
+.khanhbeauty-testimonials__track {
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-x: auto;
+  padding: 20px 0 40px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.khanhbeauty-testimonials__track::-webkit-scrollbar {
+  display: none;
+}
+
+.khanhbeauty-testimonial-card {
+  min-width: 360px;
+  max-width: 380px;
+  background: var(--white);
+  border-radius: 24px;
+  padding: 36px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 30px rgba(183, 110, 121, 0.06);
+  border: 1px solid rgba(251, 182, 206, 0.2);
+}
+
+.khanhbeauty-testimonial-card__stars {
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.khanhbeauty-testimonial-card__text {
+  font-family: var(--font-elegant);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--text-medium);
+  margin-bottom: 24px;
+}
+
+.khanhbeauty-testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.khanhbeauty-testimonial-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink-200), var(--pink-300));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}
 
 /* ─── SECTION 8: NUMBERS ─── */
-.khanhbeauty-numbers { padding: 60px 5%; background: linear-gradient(135deg, var(--pink-500), var(--rose-gold)); position: relative; overflow: hidden; }
-.khanhbeauty-numbers__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; text-align: center; }
-.khanhbeauty-numbers__item-num { font-family: var(--font-display); font-size: 48px; font-weight: 700; color: white; line-height: 1; }
+.khanhbeauty-numbers {
+  padding: 60px 5%;
+  background: linear-gradient(135deg, var(--pink-500), var(--rose-gold));
+  position: relative;
+  overflow: hidden;
+}
+
+.khanhbeauty-numbers__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.khanhbeauty-numbers__item-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
 
 /* ─── SECTION 9: BOOKING ─── */
-.khanhbeauty-booking { padding: var(--section-padding) 5%; background: var(--white); text-align: center; }
-.khanhbeauty-booking__inner { max-width: 700px; margin: 0 auto; background: linear-gradient(160deg, var(--pink-100) 0%, var(--cream-warm) 100%); padding: 70px 60px; border-radius: 32px; position: relative; overflow: hidden; }
-.khanhbeauty-booking__inner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; border-radius: 50%; background: var(--pink-200); opacity: 0.3; }
-.khanhbeauty-booking__inner::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; border-radius: 50%; background: var(--rose-gold-light); opacity: 0.2; }
-.khanhbeauty-booking h2 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); font-weight: 700; line-height: 1.2; margin-bottom: 16px; position: relative; z-index: 1; }
-.khanhbeauty-booking h2 em { color: var(--pink-500); font-style: italic; }
-.khanhbeauty-booking__actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; position: relative; z-index: 1; }
-.khanhbeauty-booking__btn { padding: 16px 40px; border-radius: 50px; border: none; font-family: var(--font-body); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); display: flex; align-items: center; gap: 8px; }
-.khanhbeauty-booking__btn--primary { background: linear-gradient(135deg, var(--pink-400), var(--pink-500)); color: white; box-shadow: 0 8px 30px rgba(237, 100, 166, 0.3); }
-.khanhbeauty-booking__btn--secondary { background: white; color: var(--rose-gold); border: 1.5px solid var(--rose-gold-light); }
+.khanhbeauty-booking {
+  padding: var(--section-padding) 5%;
+  background: var(--white);
+  text-align: center;
+}
+
+.khanhbeauty-booking__inner {
+  max-width: 700px;
+  margin: 0 auto;
+  background: linear-gradient(160deg, var(--pink-100) 0%, var(--cream-warm) 100%);
+  padding: 70px 60px;
+  border-radius: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.khanhbeauty-booking__inner::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--pink-200);
+  opacity: 0.3;
+}
+
+.khanhbeauty-booking__inner::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--rose-gold-light);
+  opacity: 0.2;
+}
+
+.khanhbeauty-booking h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.khanhbeauty-booking h2 em {
+  color: var(--pink-500);
+  font-style: italic;
+}
+
+.khanhbeauty-booking__actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.khanhbeauty-booking__btn {
+  padding: 16px 40px;
+  border-radius: 50px;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.khanhbeauty-booking__btn--primary {
+  background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+  color: white;
+  box-shadow: 0 8px 30px rgba(237, 100, 166, 0.3);
+}
+
+.khanhbeauty-booking__btn--secondary {
+  background: white;
+  color: var(--rose-gold);
+  border: 1.5px solid var(--rose-gold-light);
+}
 
 /* ─── RESPONSIVE ─── */
-@media (max-width: 1024px) { .khanhbeauty-gallery__masonry { columns: 3; } .khanhbeauty-services__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) {
-  .khanhbeauty-about__grid { grid-template-columns: 1fr; gap: 40px; }
-  .khanhbeauty-services__grid { grid-template-columns: 1fr; gap: 20px; }
-  .khanhbeauty-about__image-wrap { width: 280px; height: 280px; }
-  .khanhbeauty-about__exp-badge { right: 0; padding: 12px 18px; bottom: 0; }
-  .khanhbeauty-about__exp-badge strong { font-size: 24px; }
-  .khanhbeauty-service-card { padding: 30px 24px; border-radius: 20px; }
-  .khanhbeauty-service-card__icon { width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px; }
-  .khanhbeauty-service-card h3 { font-size: 18px; }
-  .khanhbeauty-service-card p { font-size: 14px; line-height: 1.6; }
-  .khanhbeauty-service-card__price { font-size: 20px; }
-  .khanhbeauty-showcase__item { grid-template-columns: 1fr; }
-  .khanhbeauty-showcase__item:nth-child(even) { direction: ltr; }
-  .khanhbeauty-showcase__content { padding: 40px 20px; }
-  .khanhbeauty-ba__grid { grid-template-columns: 1fr; max-width: 400px; }
-  .khanhbeauty-gallery__masonry { columns: 2; }
-  .khanhbeauty-numbers__grid { grid-template-columns: repeat(2, 1fr); }
-  .khanhbeauty-booking__inner { padding: 40px 24px; }
+@media (max-width: 1024px) {
+  .khanhbeauty-gallery__masonry {
+    columns: 3;
+  }
+
+  .khanhbeauty-services__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
-@media (max-width: 480px) { .khanhbeauty-gallery__masonry { columns: 1; } .khanhbeauty-about__stats { flex-direction: column; gap: 20px; } }
+
+@media (max-width: 768px) {
+  .khanhbeauty-about__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .khanhbeauty-services__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .khanhbeauty-about__image-wrap {
+    width: 280px;
+    height: 280px;
+  }
+
+  .khanhbeauty-about__exp-badge {
+    right: 0;
+    padding: 12px 18px;
+    bottom: 0;
+  }
+
+  .khanhbeauty-about__exp-badge strong {
+    font-size: 24px;
+  }
+
+  .khanhbeauty-service-card {
+    padding: 30px 24px;
+    border-radius: 20px;
+  }
+
+  .khanhbeauty-service-card__icon {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .khanhbeauty-service-card h3 {
+    font-size: 18px;
+  }
+
+  .khanhbeauty-service-card p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .khanhbeauty-service-card__price {
+    font-size: 20px;
+  }
+
+  .khanhbeauty-showcase__item {
+    grid-template-columns: 1fr;
+  }
+
+  .khanhbeauty-showcase__item:nth-child(even) {
+    direction: ltr;
+  }
+
+  .khanhbeauty-showcase__content {
+    padding: 40px 20px;
+  }
+
+  .khanhbeauty-ba__grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+
+  .khanhbeauty-gallery__masonry {
+    columns: 2;
+  }
+
+  .khanhbeauty-numbers__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .khanhbeauty-booking__inner {
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .khanhbeauty-gallery__masonry {
+    columns: 1;
+  }
+
+  .khanhbeauty-about__stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
 
 /* ─── BOOKING WIZARD STYLES (Moved to main.css) ─── */
 
 /* ─── PREMIUM LIGHTBOX GALLERY ─── */
-.kb-lightbox { position: fixed; inset: 0; z-index: 99999; opacity: 0; visibility: hidden; transition: opacity 0.4s ease; display: flex; flex-direction: column; }
-.kb-lightbox.active { opacity: 1; visibility: visible; }
-.kb-lightbox__overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.94); backdrop-filter: blur(15px); }
+.kb-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.kb-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.kb-lightbox__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(15px);
+}
 
 /* Top Bar */
-.kb-lightbox__topbar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; transform: translateY(-30px); opacity: 0; transition: all 0.5s 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-.kb-lightbox.active .kb-lightbox__topbar { transform: translateY(0); opacity: 1; }
-.kb-lightbox__counter { color: rgba(255,255,255,0.7); font-family: var(--font-body); font-size: 15px; font-weight: 500; letter-spacing: 2px; }
-.kb-lightbox__counter span { color: #fff; font-weight: 700; }
-.kb-lightbox__actions { display: flex; gap: 15px; }
-.kb-lightbox__action { background: rgba(255,255,255,0.08); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
-.kb-lightbox__action:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
-.kb-lightbox__action svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+.kb-lightbox__topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  transform: translateY(-30px);
+  opacity: 0;
+  transition: all 0.5s 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kb-lightbox.active .kb-lightbox__topbar {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.kb-lightbox__counter {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.kb-lightbox__counter span {
+  color: #fff;
+  font-weight: 700;
+}
+
+.kb-lightbox__actions {
+  display: flex;
+  gap: 15px;
+}
+
+.kb-lightbox__action {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.kb-lightbox__action:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.kb-lightbox__action svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
 
 /* Main Slider Area */
-.kb-lightbox__main { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.kb-lightbox__img { position: absolute; max-width: 85%; max-height: 85%; object-fit: contain; z-index: 5; opacity: 0; transform: scale(0.9) translateX(30px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); user-select: none; }
-.kb-lightbox__img.active { opacity: 1; transform: scale(1) translateX(0); z-index: 6; }
-.kb-lightbox__img.slide-left { transform: scale(0.9) translateX(-30px); }
+.kb-lightbox__main {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.kb-lightbox__img {
+  position: absolute;
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  z-index: 5;
+  opacity: 0;
+  transform: scale(0.9) translateX(30px);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  user-select: none;
+}
+
+.kb-lightbox__img.active {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+  z-index: 6;
+}
+
+.kb-lightbox__img.slide-left {
+  transform: scale(0.9) translateX(-30px);
+}
 
 /* Nav Buttons */
-.kb-lightbox__nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: all 0.3s ease; color: white; backdrop-filter: blur(4px); }
-.kb-lightbox__nav:hover { background: rgba(255,255,255,0.2); width: 64px; height: 64px; }
-.kb-lightbox__nav svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 1.5; fill: none; }
-.kb-lightbox__nav.prev { left: 30px; }
-.kb-lightbox__nav.next { right: 30px; }
+.kb-lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  color: white;
+  backdrop-filter: blur(4px);
+}
+
+.kb-lightbox__nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+  width: 64px;
+  height: 64px;
+}
+
+.kb-lightbox__nav svg {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.kb-lightbox__nav.prev {
+  left: 30px;
+}
+
+.kb-lightbox__nav.next {
+  right: 30px;
+}
 
 /* Thumbnails */
-.kb-lightbox__thumbs { position: relative; z-index: 10; height: 100px; padding: 0 40px 20px; display: flex; gap: 10px; justify-content: center; align-items: center; overflow-x: auto; scroll-behavior: smooth; transform: translateY(30px); opacity: 0; transition: all 0.5s 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-.kb-lightbox__thumbs::-webkit-scrollbar { height: 0; }
-.kb-lightbox.active .kb-lightbox__thumbs { transform: translateY(0); opacity: 1; }
-.kb-lightbox__thumb { width: 64px; height: 64px; border-radius: 8px; overflow: hidden; cursor: pointer; opacity: 0.4; transition: all 0.3s; flex-shrink: 0; border: 2px solid transparent; }
-.kb-lightbox__thumb img { width: 100%; height: 100%; object-fit: cover; }
-.kb-lightbox__thumb.active, .kb-lightbox__thumb:hover { opacity: 1; border-color: var(--pink-400); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+.kb-lightbox__thumbs {
+  position: relative;
+  z-index: 10;
+  height: 100px;
+  padding: 0 40px 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 0.5s 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kb-lightbox__thumbs::-webkit-scrollbar {
+  height: 0;
+}
+
+.kb-lightbox.active .kb-lightbox__thumbs {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.kb-lightbox__thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: all 0.3s;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+}
+
+.kb-lightbox__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kb-lightbox__thumb.active,
+.kb-lightbox__thumb:hover {
+  opacity: 1;
+  border-color: var(--pink-400);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
 
 /* Mobile Adaptations */
 @media (max-width: 768px) {
-  .kb-lightbox__nav { width: 44px; height: 44px; background: rgba(255,255,255,0.1); border: none; }
-  .kb-lightbox__nav:hover { width: 44px; height: 44px; background: rgba(255,255,255,0.1); }
-  .kb-lightbox__nav.prev { left: 10px; }
-  .kb-lightbox__nav.next { right: 10px; }
-  .kb-lightbox__img { max-width: 100vw; max-height: 80vh; border-radius: 0; box-shadow: none; }
-  .kb-lightbox__thumbs { justify-content: flex-start; padding: 0 20px 20px; }
-  .kb-lightbox__topbar { padding: 15px 20px; }
-  .kb-lightbox__action { width: 36px; height: 36px; }
-  .kb-lightbox__action svg { width: 16px; height: 16px; }
+  .kb-lightbox__nav {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+  }
+
+  .kb-lightbox__nav:hover {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .kb-lightbox__nav.prev {
+    left: 10px;
+  }
+
+  .kb-lightbox__nav.next {
+    right: 10px;
+  }
+
+  .kb-lightbox__img {
+    max-width: 100vw;
+    max-height: 80vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .kb-lightbox__thumbs {
+    justify-content: flex-start;
+    padding: 0 20px 20px;
+  }
+
+  .kb-lightbox__topbar {
+    padding: 15px 20px;
+  }
+
+  .kb-lightbox__action {
+    width: 36px;
+    height: 36px;
+  }
+
+  .kb-lightbox__action svg {
+    width: 16px;
+    height: 16px;
+  }
 }

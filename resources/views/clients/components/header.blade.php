@@ -29,7 +29,7 @@
 
     {{-- MENU CHÍNH (DESKTOP) --}}
     <ul class="khanhbeauty-nav__menu d-none-mobile">
-        <li><a href="{{ route('home') }}">Trang chủ</a></li>
+        <li><a href="{{ route('home') }}#hero">Trang chủ</a></li>
         <li><a href="{{ route('home') }}#about">Về chúng tôi</a></li>
         <li><a href="{{ route('home') }}#services">Dịch vụ</a></li>
         <li><a href="{{ route('home') }}#gallery">Portfolio</a></li>
@@ -39,6 +39,10 @@
 
     <button class="khanhbeauty-nav__book d-none-mobile js-booking-trigger">Đặt Lịch</button>
 
+    {{-- Thanh tiến trình đọc (Reading Progress) --}}
+    <div class="kb-reading-progress">
+        <div class="kb-reading-progress-bar" id="readingProgressBar"></div>
+    </div>
 </nav>
 
 {{-- NÚT DANH MỤC - NẰNG NGOÀI nav để tránh backdrop-filter bug (CHỈ HIỆN MOBILE) --}}

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Services\MediaUploadService;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
@@ -28,11 +29,14 @@ class UserForm
                             ->unique(ignoreRecord: true),
                         TextInput::make('phone')
                             ->tel(),
-                        FileUpload::make('avatar_url')
+                        FileUpload::make('avatar_id')
                             ->label('Ảnh đại diện')
-                            ->image()
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'])
-                            ->directory('avatars'),
+                            ->acceptedFileTypes(MediaUploadService::acceptedImageFileTypesForForms())
+                            ->disk('public')
+                            ->directory('users/avatars')
+                            ->saveUploadedFileUsing(function ($file) {
+                                return MediaUploadService::upload($file, 'user_avatar');
+                            }),
                     ])->columns(2),
 
                 Section::make('Bảo mật & Quyền hạn')

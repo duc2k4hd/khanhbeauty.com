@@ -25,17 +25,19 @@
                 </div>
                 <div class="kb-form-group">
                     <label>Ảnh TRƯỚC (thay đổi nếu muốn)</label>
-                    @if($portfolio->before_image)
-                        <img src="{{ $portfolio->before_image }}" style="max-width:150px;border-radius:8px;margin-bottom:8px;display:block;">
+                    @if($portfolio->beforeImage?->file_url)
+                        <img src="{{ $portfolio->beforeImage->file_url }}" style="max-width:150px;border-radius:8px;margin-bottom:8px;display:block;">
                     @endif
                     <input type="file" name="before_image" class="kb-form-control kb-form-file" accept="image/*">
+                    @error('before_image')<div style="color:red;font-size:13px;margin-top:5px;">{{ $message }}</div>@enderror
                 </div>
                 <div class="kb-form-group">
                     <label>Ảnh SAU (thay đổi nếu muốn)</label>
-                    @if($portfolio->after_image)
-                        <img src="{{ $portfolio->after_image }}" style="max-width:150px;border-radius:8px;margin-bottom:8px;display:block;">
+                    @if($portfolio->afterImage?->file_url)
+                        <img src="{{ $portfolio->afterImage->file_url }}" style="max-width:150px;border-radius:8px;margin-bottom:8px;display:block;">
                     @endif
                     <input type="file" name="after_image" class="kb-form-control kb-form-file" accept="image/*">
+                    @error('after_image')<div style="color:red;font-size:13px;margin-top:5px;">{{ $message }}</div>@enderror
                 </div>
                 <div class="kb-form-group" style="grid-column:span 2;">
                     <label>Mô tả thêm</label>
